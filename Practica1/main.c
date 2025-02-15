@@ -153,5 +153,9 @@ int main(int argc, char* argv[]) {
     printf("La media de S es: %lf\n", aux/10);
     printf("\n");
 
+    //liberamos la memoria
+    free(A);
+    free(S);
+    
     return 0;
 }

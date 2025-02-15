@@ -13,11 +13,15 @@ gcc main.c -o acp1 -msse3 -O0
 #for i in {1..10} Comentamos esto pq xa se ejecutan 10 veces no código, preguntar se é necesario 
 #manter este ou o outro, mais que nada polo vector S
 #do
+
+doc1="experimento1.txt"
+doc2="experimento2.txt"
+doc3="experimento3.txt"
 	for D in {1} #,4,64,256,1024}
 	do
 		for L in {3072,9216,81920,122880,327680,655360,1310720}
 		do
-			./acp1 $D $L
+			./acp1 $D $L >> $doc1 #Redireccionamosel output al documento que queremos, el doble ">" es para que no sobreescriba
 		done
 	done
 #done
