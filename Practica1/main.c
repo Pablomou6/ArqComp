@@ -128,29 +128,33 @@ int main(int argc, char* argv[]) {
     for(int i = 0; i < 10; i++) {
         for(int j = 0; j < R; j++) {
             sum += A[ind[j]];
-            accesos++;
+            //UN acceso para el vector ind[] y otro para A[ind[]]
+            accesos += 2;
         }
         S[i] = sum;
         sum = 0.0;
     }
-    ck=get_counter();
+    ck = get_counter();
     
-    printf("Valores: D = %d, R = %d\n", D, R);
     printf("Los resultados son:\n");
     for(int i = 0; i < 10; i++) {
         printf("Experimento número %d: %lf\n", i, S[i]);
     }
-    //media dos ciclos (ciclo /10)
-    printf("Ciclos = %1.10lf \n",ck);
-    printf("Accesos medios por cada ciclo: %lf\n", (double)accesos/ck);
-    //Las dos líneas superiores terminan la medición
 
-    double aux = 0.0;
+    double avgS = 0.0;
     for(int i = 0; i < 10; i++) {
-        aux += S[i];
+        avgS += S[i];
     }
+    avgS = avgS / 10;
+    printf("Media del vector S: %lf\n", avgS);
+
+    //media dos ciclos (ciclo /10)
+    printf("Ciclos totales = %1.10lf \n",ck);
+    double avgck = ck/10;
+    printf("Media de ciclos: %lf\n", avgck);
+    double avgAccesosCiclo = accesos/ck;
+    printf("Accesos medios por cada ciclo: %lf\n", avgAccesosCiclo);
     
-    printf("La media de S es: %lf\n", aux/10);
     printf("\n");
 
     //liberamos la memoria

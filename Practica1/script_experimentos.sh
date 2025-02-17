@@ -18,8 +18,11 @@ do
 	for R in {3072,9216,81920,122880,327680,655360,1310720}
 	do
 		for i in {1..10}; do
-			./acp1 $D $R #>> $doc1 #Redireccionamos el output al documento que queremos, el doble ">" es para que no sobreescriba
+			echo "Valores: D = $D, R = $R; iteración = $i"
+			./acp1 $D $R >> $doc1 # Redireccionamos el output al documento que queremos, el doble ">" es para que no sobreescriba
 		done
+		echo "-----------------------------------------"
+		echo ""
 	done
 done
 
