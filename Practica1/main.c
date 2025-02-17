@@ -76,9 +76,7 @@ int main(int argc, char* argv[]) {
     double* A = NULL; //Tamaño de A inda desconocido
     double sum = 0.0;
     double* S = NULL; //Tamaño de S; 10
-
-    //Variable para la medida de tiempos
-    double ck = 0.0;
+    double ck = 0.0; //Variable para la medida de tiempos
 
     //Reservamos y comprobamos que la reseva fuese exitosa
     S = malloc(10 * sizeof(double));
@@ -136,14 +134,16 @@ int main(int argc, char* argv[]) {
         sum = 0.0;
     }
     ck=get_counter();
-    printf("Ciclos = %1.10lf \n",ck);
-    printf("Accesos medios por cada ciclo: %lf\n", (double)accesos/ck);
-    //Las dos líneas superiores terminan la medición
-
+    
+    printf("Valores: D = %d, R = %d\n", D, R);
     printf("Los resultados son:\n");
     for(int i = 0; i < 10; i++) {
         printf("Experimento número %d: %lf\n", i, S[i]);
     }
+    //media dos ciclos (ciclo /10)
+    printf("Ciclos = %1.10lf \n",ck);
+    printf("Accesos medios por cada ciclo: %lf\n", (double)accesos/ck);
+    //Las dos líneas superiores terminan la medición
 
     double aux = 0.0;
     for(int i = 0; i < 10; i++) {
@@ -156,6 +156,6 @@ int main(int argc, char* argv[]) {
     //liberamos la memoria
     free(A);
     free(S);
-    
+
     return 0;
 }
