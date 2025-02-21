@@ -112,8 +112,11 @@ int main(int argc, char* argv[]) {
         Debemos asegurarnos que o tamaño reservado, sexa múltiplo de, en este caso, o tamaño da línea caché
     */
 
-    //Calculamos o tamaño de A en bytes. Dado que o parámetro de R xa está calculado, debemos multiplicar polo tamaño dun double para obter o tamaño en bytes
-    size_t size = R * sizeof(double);
+    /*
+        Calculamos o tamaño de A en bytes. Dado que o parámetro de R xa está calculado, debemos multiplicar por D e 
+        polo tamaño dun double para obter o tamaño en bytes.
+    */
+    size_t size = R * D * sizeof(double);
     if (size % CACHE_LINE_SIZE != 0) {
         //Asegurámonos de que sexa múltiplo de 64, xa que a dvisión encárgase de truncar
         size = ((size / CACHE_LINE_SIZE) + 1) * CACHE_LINE_SIZE; 
