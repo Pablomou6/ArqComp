@@ -71,76 +71,87 @@ int main(int argc, char* argv[]) {
     //Declaramos la semilla para los número aleatorios
     srand(time(NULL));
 
-    int R = -1; //Valor inda desconocido (tamaño do vector)
-    int D = -1; //Valor inda desconocido (parámetro localidad, espaciado entre elemntos)
-    double* A = NULL; //Tamaño de A inda desconocido
+    //Tamaño que terá o vector A
+    int R = -1; 
+    //Valor do parámetro de localidad, espaciado entre elemntos
+    int D = -1;
+    //Declaramos o vector A 
+    double* A = NULL; 
+    //Variable na que iremos acumulando a reducción
     double sum = 0.0;
-    double* S = NULL; //Tamaño de S; 10
-    double ck = 0.0; //Variable para la medida de tiempos
+    //Declaramos o vector S, que almacenará os resultados. O tamaño deste será 10
+    double* S = NULL;
+    //Variable para contabilizar os ciclos
+    double ck = 0.0; 
 
-    //Reservamos y comprobamos que la reseva fuese exitosa
+    //Reservamos memoria para S e comprobamos que a reseva foi exitosa
     S = malloc(10 * sizeof(double));
     if(!S) {
         printf("No se ha reservado memoria para el vector S.\n");
         return EXIT_FAILURE;
     }
     
-    //Recuperamos los valores de D y L
+    //Comprobamos que hai dous argumentos. En caso de non ser así, especificámolo por pantalla e acabamos a ejecución
     if(argc != 3) {
         printf("No se especificaron los valores de D y R\n");
         return EXIT_FAILURE;
     }
+    //Recuperamos os valores de D e R
     D = atoi(argv[1]);
     R = atoi(argv[2]);
 
-    //Hacemos el vector para el acceso indirecto
+    //Creamos o vector que nos permitirá acceder a elementos de A de forma indirecta
     int ind[R];
     for(int i = 0; i < R; i++) {
         ind[i] = i * D;
     }
 
-    //En aligned_alloc, el primer parámetro es el alineamiento (tamño de la línea caché, debe ser potencia de 2)
-    //El segundo parámetro es el tamaño del vector
-    //Debemos asegurarnos que el tamaño reservado, sea múltiplo de, en este caso, el tamaño de la línea caché
+    /*  
+        En aligned_alloc, o primeiro parámetro é o alineamiento (tamño da línea caché, debe ser potencia de 2)
+        O segundo parámetro é o tamaño do vector
+        Debemos asegurarnos que o tamaño reservado, sexa múltiplo de, en este caso, o tamaño da línea caché
+    */
+
+    //Calculamos o tamaño de A en bytes. Dado que o parámetro de R xa está calculado, debemos multiplicar polo tamaño dun double para obter o tamaño en bytes
     size_t size = R * sizeof(double);
     if (size % CACHE_LINE_SIZE != 0) {
-        //Nos aseguramos que sea múltiplo de 64, ya que la dvisión se encarga de truncar
+        //Asegurámonos de que sexa múltiplo de 64, xa que a dvisión encárgase de truncar
         size = ((size / CACHE_LINE_SIZE) + 1) * CACHE_LINE_SIZE; 
-    }
+    }   
 
+    //Reservamos memoria para A. Debemos especificar o tamaño e o alineamiento
     A = (double*)aligned_alloc(CACHE_LINE_SIZE, size);
-    //Debemos comprobar que se haya reservado memoria correctamente
+    //Comprobamos que se reservase memoria correctamente
     if (!A) {
         printf("Error al asignar memoria para A\n");
         return EXIT_FAILURE;
     }
     
-    //inicializamos el vector
+    //Inicializamos o vector A con valores aleatorios no intervalo [-1, 2)
     for(int i = 0; i < R; i++) {
-        A[i] = ((double)rand() / RAND_MAX) * 3.8 - 1.9;
+        //Nos aseguramos que nunca genere un 1 aleatoriamente al sumar el +1.0
+        A[i] = ((double)rand() / (RAND_MAX + 1.0)) * 3 - 1;
     }
 
-    //declaramos una variable para contabilizar los accesos
-    int accesos = 0;
-
-    //Hacemos la operación de reducción 10 veces. Inicializamos el contador, el código siguiente será medido
+    //Facemos a operación de reducción as 10 veces. Cada unha, almacena o resultado no vector S.
+    //Ademais, o contador é inicializado, mediremos os ciclos.
     start_counter();
     for(int i = 0; i < 10; i++) {
         for(int j = 0; j < R; j++) {
             sum += A[ind[j]];
-            //UN acceso para el vector ind[] y otro para A[ind[]]
-            accesos += 2;
         }
         S[i] = sum;
         sum = 0.0;
     }
     ck = get_counter();
     
+    //Printeamos os resultados. Serán os mismos, xa que o vector non cambia
     printf("Los resultados son:\n");
     for(int i = 0; i < 10; i++) {
         printf("Experimento número %d: %lf\n", i, S[i]);
     }
 
+    //Calculamos a media do vector S, que será igual ao valor de cada elemento, xa que son iguais
     double avgS = 0.0;
     for(int i = 0; i < 10; i++) {
         avgS += S[i];
@@ -148,12 +159,21 @@ int main(int argc, char* argv[]) {
     avgS = avgS / 10;
     printf("Media del vector S: %lf\n", avgS);
 
-    //media dos ciclos (ciclo /10)
-    printf("Ciclos totales = %1.10lf \n",ck);
+    //Imprimimos os ciclos totales das 10 iteracións
+    printf("Ciclos totales (10 iteraciones) = %1.10lf \n",ck);
+
+    //Calculamos a media de ciclos en cada iteración (Dividimos o total entre as 10 iteracións)
     double avgck = ck/10;
     printf("Media de ciclos: %lf\n", avgck);
-    double avgAccesosCiclo = accesos/ck;
-    printf("Accesos medios por cada ciclo: %lf\n", avgAccesosCiclo);
+
+    //Calculamos a media de ciclos por acceso a memoria
+    /*
+        Esto poderíase facer de 2 formas. Poderíanse contabilizar os accesos manualmente ou, como se fai neste caso,
+        temos en conta que o bucle interno realiza R accesos a memoria. Dado que hai 10 iteracións, o total de accesos
+        a memoria son os R accesos 10 veces.
+    */
+    double avgAccesosCiclo = ck/(10*R);
+    printf("Media de ciclos por acceso a memoria: %lf\n", avgAccesosCiclo);
     
     printf("\n");
 
