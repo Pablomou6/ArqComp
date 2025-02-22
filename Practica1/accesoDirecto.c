@@ -130,8 +130,8 @@ int main(int argc, char* argv[]) {
     start_counter();
     for(int i = 0; i < 10; i++) {
         S[i] = 0.0;
-        for(int j = 0; j < size; j++) {
-            S[i] += A[j];
+        for(int j = 0; j < R; j++) {
+            S[i] += A[j*D];
         }
     }
     ck = get_counter();
@@ -163,7 +163,7 @@ int main(int argc, char* argv[]) {
         temos en conta que o bucle interno realiza R accesos a memoria. Dado que hai 10 iteracións, o total de accesos
         a memoria son os R accesos 10 veces.
     */
-    double avgAccesosCiclo = ck/(10*size);
+    double avgAccesosCiclo = ck/(10*R);
     printf("Media de ciclos por acceso a memoria: %lf\n", avgAccesosCiclo);
     
     printf("\n");
