@@ -75,17 +75,17 @@ int main(int argc, char* argv[]) {
     int R = -1; 
     //Valor do parámetro de localidad, espaciado entre elemntos
     int D = -1;
-    //Declaramos o vector A 
-    double* A = NULL; 
+    //Declaramos o vector A. Ahora será un vector de enteiros
+    int* A = NULL; 
     //Variable na que iremos acumulando a reducción
-    double sum = 0.0;
+    int sum = 0;
     //Declaramos o vector S, que almacenará os resultados. O tamaño deste será 10
-    double* S = NULL;
+    int* S = NULL;
     //Variable para contabilizar os ciclos
     double ck = 0.0; 
 
     //Reservamos memoria para S e comprobamos que a reseva foi exitosa
-    S = malloc(10 * sizeof(double));
+    S = malloc(10 * sizeof(int));
     if(!S) {
         printf("No se ha reservado memoria para el vector S.\n");
         return EXIT_FAILURE;
@@ -101,7 +101,6 @@ int main(int argc, char* argv[]) {
     R = atoi(argv[2]);
 
     //Creamos o vector que nos permitirá acceder a elementos de A de forma indirecta
-    //Reservamos dinámicamente para almacenalo no Heap, xa que desa forma evitamos overflow de pila en tamaños moi grandes
     int* ind = (int*)malloc(R * sizeof(int));
     if(!ind) {
         printf("No se ha reservado memoria para el vector ind.\n");
@@ -119,16 +118,16 @@ int main(int argc, char* argv[]) {
 
     /*
         Calculamos o tamaño de A en bytes. Dado que o parámetro de R xa está calculado, debemos multiplicar por D e 
-        polo tamaño dun double para obter o tamaño en bytes.
+        polo tamaño dun int para obter o tamaño en bytes. 
     */
-    size_t size = R * D * sizeof(double);
+    size_t size = R * D * sizeof(int);
     if (size % CACHE_LINE_SIZE != 0) {
         //Asegurámonos de que sexa múltiplo de 64, xa que a dvisión encárgase de truncar
         size = ((size / CACHE_LINE_SIZE) + 1) * CACHE_LINE_SIZE; 
     }   
 
     //Reservamos memoria para A. Debemos especificar o tamaño e o alineamiento
-    A = (double*)aligned_alloc(CACHE_LINE_SIZE, size);
+    A = (int*)aligned_alloc(CACHE_LINE_SIZE, size);
     //Comprobamos que se reservase memoria correctamente
     if (!A) {
         printf("Error al asignar memoria para A\n");
@@ -138,7 +137,7 @@ int main(int argc, char* argv[]) {
     //Inicializamos o vector A con valores aleatorios no intervalo [-1, 2)
     for(int i = 0; i < R; i++) {
         //Nos aseguramos que nunca genere un 1 aleatoriamente al sumar el +1.0
-        A[i] = ((double)rand() / (RAND_MAX + 1.0)) * 3 - 1;
+        A[i] = ((int)rand() % 3) - 1;
     }
 
     //Facemos a operación de reducción as 10 veces. Cada unha, almacena o resultado no vector S.
@@ -156,7 +155,7 @@ int main(int argc, char* argv[]) {
     //Printeamos os resultados. Serán os mismos, xa que o vector non cambia
     printf("Los resultados son:\n");
     for(int i = 0; i < 10; i++) {
-        printf("Experimento número %d: %lf\n", i, S[i]);
+        printf("Experimento número %d: %d\n", i, S[i]);
     }
 
     //Calculamos a media do vector S, que será igual ao valor de cada elemento, xa que son iguais
@@ -185,7 +184,7 @@ int main(int argc, char* argv[]) {
     
     printf("\n");
 
-    FILE* doc = fopen("accesoIndirectoResultadosDouble.txt", "a+");
+    FILE* doc = fopen("accesoIndirectoResultadosInt.txt", "a+");
     fprintf(doc, "Resultados para D = %d, R = %d\n", D, R);
     fprintf(doc, "Media de ciclos: %lf\n", avgck);
     fprintf(doc, "Media de ciclos por acceso a memoria: %lf\n", avgAccesosCiclo);

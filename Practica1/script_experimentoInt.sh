@@ -10,17 +10,17 @@
 
 #Utilizamos el mismo script para los programas con tipo de dato double, ya que ambos tienen los mismos valores de D y R, solo cambia el .c que se ejecuta
 
-gcc accesoIndirecto.c -o acp1 -msse3 -O0
+gcc accesoIndirectoInt.c -o acp3 -msse3 -O0
 
 #Facemos un primeiro bucle para D = 1, xa que ten uns valores de R concretos.
 for D in 1
 do
-	for R in {3072,9216,81920,122880,327680,655360,1310720}
+	for R in {6144,18432,163840,245760,655360,1310720,2621440}
 	do
 		for i in {1..10}
 		do
 			echo "Valores: D = $D, R = $R; iteración = $i"
-			./acp1 $D $R 
+			./acp3 $D $R 
 		done
 		echo "-----------------------------------------"
 		echo ""
@@ -30,19 +30,19 @@ done
 #Da mesma forma, para D = 4 temos uns valores de R concretos.
 for D in 4
 do
-    for R in {768,2304,20480,30720,81920,163840,327680}
+    for R in {1536,4608,40960,61440,163840,327680,655360}
 	do
 		for i in {1..10}
 		do
 			echo "Valores: D = $D, R = $R; iteración = $i"
-			./acp1 $D $R 
+			./acp3 $D $R 
 		done
 		echo "-----------------------------------------"
 		echo ""
 	done
 done
 
-#Como R = L*(8/D), unha vez que D = 8, temos que R = L. Desta forma, con D's máis grandes; 8/D será menor que 1. Polo tanto, con D >= 8; R = L. 
+#Como R = L*(16/D), unha vez que D = 16, temos que R = L. Desta forma, con D's máis grandes; 16/D será menor que 1. Polo tanto, con D >= 16; R = L. 
 for D in {64,256,1024}
 do
 	for R in {384,1152,10240,15360,40960,81920,163840}
@@ -50,7 +50,7 @@ do
 		for i in {1..10}
 		do
 			echo "Valores: D = $D, R = $R; iteración = $i"
-			./acp1 $D $R 
+			./acp3 $D $R 
 		done
 		echo "-----------------------------------------"
 		echo ""
