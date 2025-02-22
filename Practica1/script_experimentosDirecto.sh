@@ -8,10 +8,11 @@
 # Sustituir los valores de Di y Li por los calculados para la realización de la práctica.
 
 
-#Utilizamos el mismo script para los programas con tipo de dato double, ya que ambos tienen los mismos valores de D y R, solo cambia el .c que se ejecuta
+#Utilizamos una copia el mismo script para los programas con tipo de dato double, ya que ambos tienen los mismos valores de D y R, solo cambia 
+#el .c que se ejecuta
 
-gcc accesoIndirecto.c -o acp1 -msse3 -O0
-#gcc accesoDirecto.c -o acp3 -msse3 -O0
+#gcc accesoIndirecto.c -o acp1 -msse3 -O0
+gcc accesoDirecto.c -o acp2 -msse3 -O0
 
 #Facemos un primeiro bucle para D = 1, xa que ten uns valores de R concretos.
 for D in 1
@@ -21,7 +22,7 @@ do
 		for i in {1..10}
 		do
 			echo "Valores: D = $D, R = $R; iteración = $i"
-			./acp1 $D $R 
+			./acp2 $D $R 
 		done
 		echo "-----------------------------------------"
 		echo ""
@@ -36,7 +37,7 @@ do
 		for i in {1..10}
 		do
 			echo "Valores: D = $D, R = $R; iteración = $i"
-			./acp1 $D $R 
+			./acp2 $D $R 
 		done
 		echo "-----------------------------------------"
 		echo ""
@@ -51,7 +52,7 @@ do
 		for i in {1..10}
 		do
 			echo "Valores: D = $D, R = $R; iteración = $i"
-			./acp1 $D $R 
+			./acp2 $D $R 
 		done
 		echo "-----------------------------------------"
 		echo ""
