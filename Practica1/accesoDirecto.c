@@ -97,7 +97,12 @@ int main(int argc, char* argv[]) {
     }
     //Recuperamos o valor de D. R calculase como o valor de L introducido polo script, multiplicado por 8/D; por moi grande que sea D, ceil(8/D) será 1 mínimo
     D = atoi(argv[1]);
-    R = atoi(argv[2]) * ceil(8.0/D);
+    if(D < 8) {
+        R = atoi(argv[2]) * ceil(8.0/D);
+    }
+    else {
+        R = atoi(argv[2]);
+    }
 
     //Calculamos o tamaño do vector A  
     unsigned long size = R * D;  

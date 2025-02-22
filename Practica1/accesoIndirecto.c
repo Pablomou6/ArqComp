@@ -97,7 +97,12 @@ int main(int argc, char* argv[]) {
     }
     //Recuperamos o valor de D. R calculase como o valor de L introducido polo script, multiplicado por 8/D; por moi grande que sea D, ceil(8/D) será 1 mínimo
     D = atoi(argv[1]);
-    R = atoi(argv[2]) * ceil(8.0/D);
+    if(D < 8) {
+        R = atoi(argv[2]) * ceil(8.0/D);
+    }
+    else {
+        R = atoi(argv[2]);
+    }
 
     //Creamos o vector que nos permitirá acceder a elementos de A de forma indirecta
     //Reservamos dinámicamente para almacenalo no Heap, xa que desa forma evitamos overflow de pila en tamaños moi grandes
@@ -110,8 +115,8 @@ int main(int argc, char* argv[]) {
         ind[i] = i * D;
     }
 
-    //Calculamos o tamaño do vector A  
-    unsigned long size = R * D;  
+    //Calculamos o tamaño do vector A
+    unsigned long size = R * D; 
 
     /*  
         En aligned_alloc, o primeiro parámetro é o alineamiento (tamño da línea caché, debe ser potencia de 2)

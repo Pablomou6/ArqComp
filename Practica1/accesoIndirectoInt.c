@@ -3,10 +3,8 @@
 #include <math.h>
 #include <time.h>
 #include <unistd.h>
-#include <math.h>
 
 #define CACHE_LINE_SIZE 64
-
 
 ////////////////// FUNCIONES DE MEDICIÓN DE TIEMPOS //////////////////////
 void start_counter();
@@ -14,59 +12,58 @@ double get_counter();
 double mhz();
 
 /* Initialize the cycle counter */
- static unsigned cyc_hi = 0;
- static unsigned cyc_lo = 0;
+static unsigned cyc_hi = 0;
+static unsigned cyc_lo = 0;
 
+/* Set *hi and *lo to the high and low order bits of the cycle counter.
+Implementation requires assembly code to use the rdtsc instruction. */
+void access_counter(unsigned *hi, unsigned *lo)
+{
+    asm("rdtsc; movl %%edx,%0; movl %%eax,%1" /* Read cycle counter */
+        : "=r" (*hi), "=r" (*lo) /* and move results to */
+        : /* No input */ /* the two outputs */
+        : "%edx", "%eax");
+}
 
- /* Set *hi and *lo to the high and low order bits of the cycle counter.
- Implementation requires assembly code to use the rdtsc instruction. */
- void access_counter(unsigned *hi, unsigned *lo)
- {
- asm("rdtsc; movl %%edx,%0; movl %%eax,%1" /* Read cycle counter */
- : "=r" (*hi), "=r" (*lo) /* and move results to */
- : /* No input */ /* the two outputs */
- : "%edx", "%eax");
- }
+/* Record the current value of the cycle counter. */
+void start_counter()
+{
+    access_counter(&cyc_hi, &cyc_lo);
+}
 
- /* Record the current value of the cycle counter. */
- void start_counter()
- {
- access_counter(&cyc_hi, &cyc_lo);
- }
+/* Return the number of cycles since the last call to start_counter. */
+double get_counter()
+{
+    unsigned ncyc_hi, ncyc_lo;
+    unsigned hi, lo, borrow;
+    double result;
 
- /* Return the number of cycles since the last call to start_counter. */
- double get_counter()
- {
- unsigned ncyc_hi, ncyc_lo;
- unsigned hi, lo, borrow;
- double result;
+    /* Get cycle counter */
+    access_counter(&ncyc_hi, &ncyc_lo);
 
- /* Get cycle counter */
- access_counter(&ncyc_hi, &ncyc_lo);
-
- /* Do double precision subtraction */
- lo = ncyc_lo - cyc_lo;
- borrow = lo > ncyc_lo;
- hi = ncyc_hi - cyc_hi - borrow;
- result = (double) hi * (1 << 30) * 4 + lo;
- if (result < 0) {
- fprintf(stderr, "Error: counter returns neg value: %.0f\n", result);
- }
- return result;
- }
+    /* Do double precision subtraction */
+    lo = ncyc_lo - cyc_lo;
+    borrow = lo > ncyc_lo;
+    hi = ncyc_hi - cyc_hi - borrow;
+    result = (double) hi * (1 << 30) * 4 + lo;
+    if (result < 0) {
+        fprintf(stderr, "Error: counter returns neg value: %.0f\n", result);
+    }
+    return result;
+}
 
 double mhz(int verbose, int sleeptime)
- {
- double rate;
+{
+    double rate;
 
- start_counter();
- sleep(sleeptime);
- rate = get_counter() / (1e6*sleeptime);
- if (verbose)
- printf("\n Processor clock rate = %.1f MHz\n", rate);
- return rate;
- }
- /////////////////////////////////////////////////////////////////////////
+    start_counter();
+    sleep(sleeptime);
+    rate = get_counter() / (1e6 * sleeptime);
+    if (verbose)
+        printf("\n Processor clock rate = %.1f MHz\n", rate);
+    return rate;
+}
+/////////////////////////////////////////////////////////////////////
 
 int main(int argc, char* argv[]) {
     //Declaramos la semilla para los número aleatorios
@@ -97,7 +94,13 @@ int main(int argc, char* argv[]) {
     }
     //Recuperamos o valor de D. R calculase como o valor de L introducido polo script, multiplicado por 8/D; por moi grande que sea D, ceil(8/D) será 1 mínimo
     D = atoi(argv[1]);
-    R = atoi(argv[2]) * ceil(4.0/D);
+    if(D < 16) {
+        R = atoi(argv[2]) * ceil(16.0/D);
+    }
+    else {
+        R = atoi(argv[2]);
+    }
+    
 
     //Creamos o vector que nos permitirá acceder a elementos de A de forma indirecta
     //Reservamos dinámicamente para almacenalo no Heap, xa que desa forma evitamos overflow de pila en tamaños moi grandes
@@ -110,8 +113,8 @@ int main(int argc, char* argv[]) {
         ind[i] = i * D;
     }
 
-    //Calculamos o tamaño do vector A  
-    unsigned long size = R * D;  
+    //Calculamos o tamaño do vector A
+    unsigned long size = R * D; 
 
     /*  
         En aligned_alloc, o primeiro parámetro é o alineamiento (tamño da línea caché, debe ser potencia de 2)
@@ -128,14 +131,14 @@ int main(int argc, char* argv[]) {
     //Inicializamos o vector A con valores aleatorios no intervalo [-1, 2)
     for(int i = 0; i < size; i++) {
         //Nos aseguramos que nunca genere un 1 aleatoriamente al sumar el +1.0
-        A[i] = ((int)rand() % 3) - 1;
+        A[i] = (rand() % 3) - 1;
     }
 
     //Facemos a operación de reducción as 10 veces. Cada unha, almacena o resultado no vector S.
     //Ademais, o contador é inicializado, mediremos os ciclos.
     start_counter();
     for(int i = 0; i < 10; i++) {
-        S[i] = 0.0;
+        S[i] = 0;
         for(int j = 0; j < R; j++) {
             S[i] += A[ind[j]];
         }
@@ -145,7 +148,7 @@ int main(int argc, char* argv[]) {
     //Printeamos os resultados. Serán os mismos, xa que o vector non cambia
     printf("Los resultados son:\n");
     for(int i = 0; i < 10; i++) {
-        printf("Experimento número %d: %lf\n", i, S[i]);
+        printf("Experimento número %d: %d\n", i, S[i]);
     }
 
     //Calculamos a media do vector S, que será igual ao valor de cada elemento, xa que son iguais
