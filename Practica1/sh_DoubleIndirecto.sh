@@ -12,7 +12,7 @@ gcc accesoDirecto.c -o acp2 -msse3 -O0 -lm
 #gcc accesoIndirectoInt.c -o acp3 -msse3 -O0 -lm
 
 
-for D in {1,4,32,64,512}
+for D in {1,4,64,256,1024}
 do
 	for L in {384,1152,10240,15360,40960,81920,163840} 
 	do
