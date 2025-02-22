@@ -21,9 +21,10 @@ for D in 1
 do
 	for R in {3072,9216,81920,122880,327680,655360,1310720}
 	do
-		for i in {1..10}; do
+		for i in {1..10}
+		do
 			echo "Valores: D = $D, R = $R; iteración = $i"
-			./acp1 $D $R >> $doc1 # Redireccionamos el output al documento que queremos, el doble ">" es para que no sobreescriba
+			./acp1 $D $R 
 		done
 		echo "-----------------------------------------"
 		echo ""
@@ -35,9 +36,10 @@ for D in 4
 do
     for R in {768,2304,20480,30720,81920,163840,327680}
 	do
-		for i in {1..10}; do
+		for i in {1..10}
+		do
 			echo "Valores: D = $D, R = $R; iteración = $i"
-			./acp1 $D $R >> $doc1 # Redireccionamos el output al documento que queremos, el doble ">" es para que no sobreescriba
+			./acp1 $D $R 
 		done
 		echo "-----------------------------------------"
 		echo ""
@@ -49,9 +51,10 @@ for D in {64,256,1024}
 do
 	for R in {384,1152,10240,15360,40960,81920,163840}
 	do
-		for i in {1..10}; do
+		for i in {1..10}
+		do
 			echo "Valores: D = $D, R = $R; iteración = $i"
-			./acp1 $D $R >> $doc1 # Redireccionamos el output al documento que queremos, el doble ">" es para que no sobreescriba
+			./acp1 $D $R 
 		done
 		echo "-----------------------------------------"
 		echo ""

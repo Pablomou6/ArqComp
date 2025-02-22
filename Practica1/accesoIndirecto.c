@@ -180,6 +180,12 @@ int main(int argc, char* argv[]) {
     
     printf("\n");
 
+    FILE* doc = fopen("accesoIndirectoResultadosDouble.txt", "a+");
+    fprintf(doc, "Resultados para D = %d, R = %d\n", D, R);
+    fprintf(doc, "Media de ciclos: %lf\n", avgck);
+    fprintf(doc, "Media de ciclos por acceso a memoria: %lf\n", avgAccesosCiclo);
+    fprintf(doc, "\n");
+
     //liberamos la memoria
     free(A);
     free(S);
