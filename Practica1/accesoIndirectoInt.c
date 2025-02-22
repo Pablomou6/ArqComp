@@ -101,6 +101,7 @@ int main(int argc, char* argv[]) {
     R = atoi(argv[2]);
 
     //Creamos o vector que nos permitirá acceder a elementos de A de forma indirecta
+    //Reservamos dinámicamente para almacenalo no Heap, xa que desa forma evitamos overflow de pila en tamaños moi grandes
     int* ind = (int*)malloc(R * sizeof(int));
     if(!ind) {
         printf("No se ha reservado memoria para el vector ind.\n");
