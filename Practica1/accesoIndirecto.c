@@ -187,6 +187,7 @@ int main(int argc, char* argv[]) {
 
     //liberamos la memoria
     free(A);
+    free(ind);
     free(S);
 
     return 0;
