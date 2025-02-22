@@ -1,0 +1,1400 @@
+Resultados para D = 1, R = 3072
+Media de ciclos: 21752.400000
+Media de ciclos por acceso a memoria: 7.080859
+
+Resultados para D = 1, R = 3072
+Media de ciclos: 21752.000000
+Media de ciclos por acceso a memoria: 7.080729
+
+Resultados para D = 1, R = 3072
+Media de ciclos: 21753.400000
+Media de ciclos por acceso a memoria: 7.081185
+
+Resultados para D = 1, R = 3072
+Media de ciclos: 22727.200000
+Media de ciclos por acceso a memoria: 7.398177
+
+Resultados para D = 1, R = 3072
+Media de ciclos: 21754.400000
+Media de ciclos por acceso a memoria: 7.081510
+
+Resultados para D = 1, R = 3072
+Media de ciclos: 21749.600000
+Media de ciclos por acceso a memoria: 7.079948
+
+Resultados para D = 1, R = 3072
+Media de ciclos: 21752.200000
+Media de ciclos por acceso a memoria: 7.080794
+
+Resultados para D = 1, R = 3072
+Media de ciclos: 22745.000000
+Media de ciclos por acceso a memoria: 7.403971
+
+Resultados para D = 1, R = 3072
+Media de ciclos: 21749.000000
+Media de ciclos por acceso a memoria: 7.079753
+
+Resultados para D = 1, R = 3072
+Media de ciclos: 21756.800000
+Media de ciclos por acceso a memoria: 7.082292
+
+Resultados para D = 1, R = 9216
+Media de ciclos: 66290.400000
+Media de ciclos por acceso a memoria: 7.192969
+
+Resultados para D = 1, R = 9216
+Media de ciclos: 65401.000000
+Media de ciclos por acceso a memoria: 7.096463
+
+Resultados para D = 1, R = 9216
+Media de ciclos: 65374.000000
+Media de ciclos por acceso a memoria: 7.093533
+
+Resultados para D = 1, R = 9216
+Media de ciclos: 66279.600000
+Media de ciclos por acceso a memoria: 7.191797
+
+Resultados para D = 1, R = 9216
+Media de ciclos: 65385.000000
+Media de ciclos por acceso a memoria: 7.094727
+
+Resultados para D = 1, R = 9216
+Media de ciclos: 65354.600000
+Media de ciclos por acceso a memoria: 7.091428
+
+Resultados para D = 1, R = 9216
+Media de ciclos: 65358.400000
+Media de ciclos por acceso a memoria: 7.091840
+
+Resultados para D = 1, R = 9216
+Media de ciclos: 65399.400000
+Media de ciclos por acceso a memoria: 7.096289
+
+Resultados para D = 1, R = 9216
+Media de ciclos: 66132.000000
+Media de ciclos por acceso a memoria: 7.175781
+
+Resultados para D = 1, R = 9216
+Media de ciclos: 65365.200000
+Media de ciclos por acceso a memoria: 7.092578
+
+Resultados para D = 1, R = 81920
+Media de ciclos: 582928.000000
+Media de ciclos por acceso a memoria: 7.115820
+
+Resultados para D = 1, R = 81920
+Media de ciclos: 582247.000000
+Media de ciclos por acceso a memoria: 7.107507
+
+Resultados para D = 1, R = 81920
+Media de ciclos: 584106.000000
+Media de ciclos por acceso a memoria: 7.130200
+
+Resultados para D = 1, R = 81920
+Media de ciclos: 582332.600000
+Media de ciclos por acceso a memoria: 7.108552
+
+Resultados para D = 1, R = 81920
+Media de ciclos: 582553.200000
+Media de ciclos por acceso a memoria: 7.111245
+
+Resultados para D = 1, R = 81920
+Media de ciclos: 582061.400000
+Media de ciclos por acceso a memoria: 7.105242
+
+Resultados para D = 1, R = 81920
+Media de ciclos: 582780.400000
+Media de ciclos por acceso a memoria: 7.114019
+
+Resultados para D = 1, R = 81920
+Media de ciclos: 583632.200000
+Media de ciclos por acceso a memoria: 7.124417
+
+Resultados para D = 1, R = 81920
+Media de ciclos: 584584.400000
+Media de ciclos por acceso a memoria: 7.136040
+
+Resultados para D = 1, R = 81920
+Media de ciclos: 582751.000000
+Media de ciclos por acceso a memoria: 7.113660
+
+Resultados para D = 1, R = 122880
+Media de ciclos: 872572.200000
+Media de ciclos por acceso a memoria: 7.101011
+
+Resultados para D = 1, R = 122880
+Media de ciclos: 875793.200000
+Media de ciclos por acceso a memoria: 7.127223
+
+Resultados para D = 1, R = 122880
+Media de ciclos: 873891.800000
+Media de ciclos por acceso a memoria: 7.111750
+
+Resultados para D = 1, R = 122880
+Media de ciclos: 873827.200000
+Media de ciclos por acceso a memoria: 7.111224
+
+Resultados para D = 1, R = 122880
+Media de ciclos: 873852.200000
+Media de ciclos por acceso a memoria: 7.111427
+
+Resultados para D = 1, R = 122880
+Media de ciclos: 874720.200000
+Media de ciclos por acceso a memoria: 7.118491
+
+Resultados para D = 1, R = 122880
+Media de ciclos: 874190.600000
+Media de ciclos por acceso a memoria: 7.114181
+
+Resultados para D = 1, R = 122880
+Media de ciclos: 873465.200000
+Media de ciclos por acceso a memoria: 7.108278
+
+Resultados para D = 1, R = 122880
+Media de ciclos: 875815.600000
+Media de ciclos por acceso a memoria: 7.127406
+
+Resultados para D = 1, R = 122880
+Media de ciclos: 873670.400000
+Media de ciclos por acceso a memoria: 7.109948
+
+Resultados para D = 1, R = 327680
+Media de ciclos: 2331359.600000
+Media de ciclos por acceso a memoria: 7.114745
+
+Resultados para D = 1, R = 327680
+Media de ciclos: 2337965.400000
+Media de ciclos por acceso a memoria: 7.134904
+
+Resultados para D = 1, R = 327680
+Media de ciclos: 2331884.400000
+Media de ciclos por acceso a memoria: 7.116346
+
+Resultados para D = 1, R = 327680
+Media de ciclos: 2331141.800000
+Media de ciclos por acceso a memoria: 7.114080
+
+Resultados para D = 1, R = 327680
+Media de ciclos: 2330488.400000
+Media de ciclos por acceso a memoria: 7.112086
+
+Resultados para D = 1, R = 327680
+Media de ciclos: 2331954.200000
+Media de ciclos por acceso a memoria: 7.116559
+
+Resultados para D = 1, R = 327680
+Media de ciclos: 2331348.400000
+Media de ciclos por acceso a memoria: 7.114711
+
+Resultados para D = 1, R = 327680
+Media de ciclos: 2331609.400000
+Media de ciclos por acceso a memoria: 7.115507
+
+Resultados para D = 1, R = 327680
+Media de ciclos: 2330451.800000
+Media de ciclos por acceso a memoria: 7.111974
+
+Resultados para D = 1, R = 327680
+Media de ciclos: 2330433.400000
+Media de ciclos por acceso a memoria: 7.111918
+
+Resultados para D = 1, R = 655360
+Media de ciclos: 4661157.200000
+Media de ciclos por acceso a memoria: 7.112361
+
+Resultados para D = 1, R = 655360
+Media de ciclos: 4666348.400000
+Media de ciclos por acceso a memoria: 7.120283
+
+Resultados para D = 1, R = 655360
+Media de ciclos: 4660780.800000
+Media de ciclos por acceso a memoria: 7.111787
+
+Resultados para D = 1, R = 655360
+Media de ciclos: 4665404.800000
+Media de ciclos por acceso a memoria: 7.118843
+
+Resultados para D = 1, R = 655360
+Media de ciclos: 4660306.200000
+Media de ciclos por acceso a memoria: 7.111063
+
+Resultados para D = 1, R = 655360
+Media de ciclos: 4666221.400000
+Media de ciclos por acceso a memoria: 7.120089
+
+Resultados para D = 1, R = 655360
+Media de ciclos: 4660560.800000
+Media de ciclos por acceso a memoria: 7.111451
+
+Resultados para D = 1, R = 655360
+Media de ciclos: 4665635.200000
+Media de ciclos por acceso a memoria: 7.119194
+
+Resultados para D = 1, R = 655360
+Media de ciclos: 4661153.400000
+Media de ciclos por acceso a memoria: 7.112356
+
+Resultados para D = 1, R = 655360
+Media de ciclos: 4665181.200000
+Media de ciclos por acceso a memoria: 7.118502
+
+Resultados para D = 1, R = 1310720
+Media de ciclos: 9325765.600000
+Media de ciclos por acceso a memoria: 7.114995
+
+Resultados para D = 1, R = 1310720
+Media de ciclos: 9324625.200000
+Media de ciclos por acceso a memoria: 7.114124
+
+Resultados para D = 1, R = 1310720
+Media de ciclos: 9322533.000000
+Media de ciclos por acceso a memoria: 7.112528
+
+Resultados para D = 1, R = 1310720
+Media de ciclos: 9326639.200000
+Media de ciclos por acceso a memoria: 7.115661
+
+Resultados para D = 1, R = 1310720
+Media de ciclos: 9325652.600000
+Media de ciclos por acceso a memoria: 7.114908
+
+Resultados para D = 1, R = 1310720
+Media de ciclos: 9319997.200000
+Media de ciclos por acceso a memoria: 7.110594
+
+Resultados para D = 1, R = 1310720
+Media de ciclos: 9322650.400000
+Media de ciclos por acceso a memoria: 7.112618
+
+Resultados para D = 1, R = 1310720
+Media de ciclos: 9321911.600000
+Media de ciclos por acceso a memoria: 7.112054
+
+Resultados para D = 1, R = 1310720
+Media de ciclos: 9322081.400000
+Media de ciclos por acceso a memoria: 7.112184
+
+Resultados para D = 1, R = 1310720
+Media de ciclos: 9320231.400000
+Media de ciclos por acceso a memoria: 7.110772
+
+Resultados para D = 4, R = 768
+Media de ciclos: 5457.400000
+Media de ciclos por acceso a memoria: 7.105990
+
+Resultados para D = 4, R = 768
+Media de ciclos: 5458.000000
+Media de ciclos por acceso a memoria: 7.106771
+
+Resultados para D = 4, R = 768
+Media de ciclos: 5456.600000
+Media de ciclos por acceso a memoria: 7.104948
+
+Resultados para D = 4, R = 768
+Media de ciclos: 5455.600000
+Media de ciclos por acceso a memoria: 7.103646
+
+Resultados para D = 4, R = 768
+Media de ciclos: 5453.000000
+Media de ciclos por acceso a memoria: 7.100260
+
+Resultados para D = 4, R = 768
+Media de ciclos: 5451.800000
+Media de ciclos por acceso a memoria: 7.098698
+
+Resultados para D = 4, R = 768
+Media de ciclos: 5463.400000
+Media de ciclos por acceso a memoria: 7.113802
+
+Resultados para D = 4, R = 768
+Media de ciclos: 5453.600000
+Media de ciclos por acceso a memoria: 7.101042
+
+Resultados para D = 4, R = 768
+Media de ciclos: 5458.000000
+Media de ciclos por acceso a memoria: 7.106771
+
+Resultados para D = 4, R = 768
+Media de ciclos: 5459.200000
+Media de ciclos por acceso a memoria: 7.108333
+
+Resultados para D = 4, R = 2304
+Media de ciclos: 16319.600000
+Media de ciclos por acceso a memoria: 7.083160
+
+Resultados para D = 4, R = 2304
+Media de ciclos: 16318.200000
+Media de ciclos por acceso a memoria: 7.082552
+
+Resultados para D = 4, R = 2304
+Media de ciclos: 16318.600000
+Media de ciclos por acceso a memoria: 7.082726
+
+Resultados para D = 4, R = 2304
+Media de ciclos: 16320.600000
+Media de ciclos por acceso a memoria: 7.083594
+
+Resultados para D = 4, R = 2304
+Media de ciclos: 16318.200000
+Media de ciclos por acceso a memoria: 7.082552
+
+Resultados para D = 4, R = 2304
+Media de ciclos: 16322.000000
+Media de ciclos por acceso a memoria: 7.084201
+
+Resultados para D = 4, R = 2304
+Media de ciclos: 16319.600000
+Media de ciclos por acceso a memoria: 7.083160
+
+Resultados para D = 4, R = 2304
+Media de ciclos: 16317.400000
+Media de ciclos por acceso a memoria: 7.082205
+
+Resultados para D = 4, R = 2304
+Media de ciclos: 16319.800000
+Media de ciclos por acceso a memoria: 7.083247
+
+Resultados para D = 4, R = 2304
+Media de ciclos: 16317.400000
+Media de ciclos por acceso a memoria: 7.082205
+
+Resultados para D = 4, R = 20480
+Media de ciclos: 145259.600000
+Media de ciclos por acceso a memoria: 7.092754
+
+Resultados para D = 4, R = 20480
+Media de ciclos: 146177.600000
+Media de ciclos por acceso a memoria: 7.137578
+
+Resultados para D = 4, R = 20480
+Media de ciclos: 146134.800000
+Media de ciclos por acceso a memoria: 7.135488
+
+Resultados para D = 4, R = 20480
+Media de ciclos: 145255.800000
+Media de ciclos por acceso a memoria: 7.092568
+
+Resultados para D = 4, R = 20480
+Media de ciclos: 146751.000000
+Media de ciclos por acceso a memoria: 7.165576
+
+Resultados para D = 4, R = 20480
+Media de ciclos: 146112.400000
+Media de ciclos por acceso a memoria: 7.134395
+
+Resultados para D = 4, R = 20480
+Media de ciclos: 146195.200000
+Media de ciclos por acceso a memoria: 7.138438
+
+Resultados para D = 4, R = 20480
+Media de ciclos: 146080.600000
+Media de ciclos por acceso a memoria: 7.132842
+
+Resultados para D = 4, R = 20480
+Media de ciclos: 146235.800000
+Media de ciclos por acceso a memoria: 7.140420
+
+Resultados para D = 4, R = 20480
+Media de ciclos: 146134.000000
+Media de ciclos por acceso a memoria: 7.135449
+
+Resultados para D = 4, R = 30720
+Media de ciclos: 220123.200000
+Media de ciclos por acceso a memoria: 7.165469
+
+Resultados para D = 4, R = 30720
+Media de ciclos: 218863.600000
+Media de ciclos por acceso a memoria: 7.124466
+
+Resultados para D = 4, R = 30720
+Media de ciclos: 218783.000000
+Media de ciclos por acceso a memoria: 7.121842
+
+Resultados para D = 4, R = 30720
+Media de ciclos: 218810.200000
+Media de ciclos por acceso a memoria: 7.122728
+
+Resultados para D = 4, R = 30720
+Media de ciclos: 219038.200000
+Media de ciclos por acceso a memoria: 7.130150
+
+Resultados para D = 4, R = 30720
+Media de ciclos: 218681.000000
+Media de ciclos por acceso a memoria: 7.118522
+
+Resultados para D = 4, R = 30720
+Media de ciclos: 218748.600000
+Media de ciclos por acceso a memoria: 7.120723
+
+Resultados para D = 4, R = 30720
+Media de ciclos: 218812.000000
+Media de ciclos por acceso a memoria: 7.122786
+
+Resultados para D = 4, R = 30720
+Media de ciclos: 218627.000000
+Media de ciclos por acceso a memoria: 7.116764
+
+Resultados para D = 4, R = 30720
+Media de ciclos: 218671.000000
+Media de ciclos por acceso a memoria: 7.118197
+
+Resultados para D = 4, R = 81920
+Media de ciclos: 582314.600000
+Media de ciclos por acceso a memoria: 7.108333
+
+Resultados para D = 4, R = 81920
+Media de ciclos: 582198.600000
+Media de ciclos por acceso a memoria: 7.106917
+
+Resultados para D = 4, R = 81920
+Media de ciclos: 581948.600000
+Media de ciclos por acceso a memoria: 7.103865
+
+Resultados para D = 4, R = 81920
+Media de ciclos: 582601.600000
+Media de ciclos por acceso a memoria: 7.111836
+
+Resultados para D = 4, R = 81920
+Media de ciclos: 583186.800000
+Media de ciclos por acceso a memoria: 7.118979
+
+Resultados para D = 4, R = 81920
+Media de ciclos: 583815.600000
+Media de ciclos por acceso a memoria: 7.126655
+
+Resultados para D = 4, R = 81920
+Media de ciclos: 581740.200000
+Media de ciclos por acceso a memoria: 7.101321
+
+Resultados para D = 4, R = 81920
+Media de ciclos: 582756.600000
+Media de ciclos por acceso a memoria: 7.113728
+
+Resultados para D = 4, R = 81920
+Media de ciclos: 582442.000000
+Media de ciclos por acceso a memoria: 7.109888
+
+Resultados para D = 4, R = 81920
+Media de ciclos: 582326.200000
+Media de ciclos por acceso a memoria: 7.108474
+
+Resultados para D = 4, R = 163840
+Media de ciclos: 1166981.400000
+Media de ciclos por acceso a memoria: 7.122689
+
+Resultados para D = 4, R = 163840
+Media de ciclos: 1165860.800000
+Media de ciclos por acceso a memoria: 7.115850
+
+Resultados para D = 4, R = 163840
+Media de ciclos: 1164747.200000
+Media de ciclos por acceso a memoria: 7.109053
+
+Resultados para D = 4, R = 163840
+Media de ciclos: 1167423.200000
+Media de ciclos por acceso a memoria: 7.125386
+
+Resultados para D = 4, R = 163840
+Media de ciclos: 1165620.800000
+Media de ciclos por acceso a memoria: 7.114385
+
+Resultados para D = 4, R = 163840
+Media de ciclos: 1164344.200000
+Media de ciclos por acceso a memoria: 7.106593
+
+Resultados para D = 4, R = 163840
+Media de ciclos: 1165665.000000
+Media de ciclos por acceso a memoria: 7.114655
+
+Resultados para D = 4, R = 163840
+Media de ciclos: 1165931.800000
+Media de ciclos por acceso a memoria: 7.116283
+
+Resultados para D = 4, R = 163840
+Media de ciclos: 1166241.800000
+Media de ciclos por acceso a memoria: 7.118175
+
+Resultados para D = 4, R = 163840
+Media de ciclos: 1164618.400000
+Media de ciclos por acceso a memoria: 7.108267
+
+Resultados para D = 4, R = 327680
+Media de ciclos: 2333143.200000
+Media de ciclos por acceso a memoria: 7.120188
+
+Resultados para D = 4, R = 327680
+Media de ciclos: 2331108.600000
+Media de ciclos por acceso a memoria: 7.113979
+
+Resultados para D = 4, R = 327680
+Media de ciclos: 2330992.800000
+Media de ciclos por acceso a memoria: 7.113625
+
+Resultados para D = 4, R = 327680
+Media de ciclos: 2331744.800000
+Media de ciclos por acceso a memoria: 7.115920
+
+Resultados para D = 4, R = 327680
+Media de ciclos: 2331582.400000
+Media de ciclos por acceso a memoria: 7.115425
+
+Resultados para D = 4, R = 327680
+Media de ciclos: 2331990.600000
+Media de ciclos por acceso a memoria: 7.116671
+
+Resultados para D = 4, R = 327680
+Media de ciclos: 2331231.200000
+Media de ciclos por acceso a memoria: 7.114353
+
+Resultados para D = 4, R = 327680
+Media de ciclos: 2331023.800000
+Media de ciclos por acceso a memoria: 7.113720
+
+Resultados para D = 4, R = 327680
+Media de ciclos: 2334550.200000
+Media de ciclos por acceso a memoria: 7.124482
+
+Resultados para D = 4, R = 327680
+Media de ciclos: 2331724.200000
+Media de ciclos por acceso a memoria: 7.115858
+
+Resultados para D = 64, R = 384
+Media de ciclos: 2741.800000
+Media de ciclos por acceso a memoria: 7.140104
+
+Resultados para D = 64, R = 384
+Media de ciclos: 2742.800000
+Media de ciclos por acceso a memoria: 7.142708
+
+Resultados para D = 64, R = 384
+Media de ciclos: 2739.000000
+Media de ciclos por acceso a memoria: 7.132812
+
+Resultados para D = 64, R = 384
+Media de ciclos: 2744.000000
+Media de ciclos por acceso a memoria: 7.145833
+
+Resultados para D = 64, R = 384
+Media de ciclos: 2740.800000
+Media de ciclos por acceso a memoria: 7.137500
+
+Resultados para D = 64, R = 384
+Media de ciclos: 2740.600000
+Media de ciclos por acceso a memoria: 7.136979
+
+Resultados para D = 64, R = 384
+Media de ciclos: 2738.400000
+Media de ciclos por acceso a memoria: 7.131250
+
+Resultados para D = 64, R = 384
+Media de ciclos: 2742.600000
+Media de ciclos por acceso a memoria: 7.142188
+
+Resultados para D = 64, R = 384
+Media de ciclos: 2739.200000
+Media de ciclos por acceso a memoria: 7.133333
+
+Resultados para D = 64, R = 384
+Media de ciclos: 2738.400000
+Media de ciclos por acceso a memoria: 7.131250
+
+Resultados para D = 64, R = 1152
+Media de ciclos: 9016.600000
+Media de ciclos por acceso a memoria: 7.826910
+
+Resultados para D = 64, R = 1152
+Media de ciclos: 8175.800000
+Media de ciclos por acceso a memoria: 7.097049
+
+Resultados para D = 64, R = 1152
+Media de ciclos: 8176.400000
+Media de ciclos por acceso a memoria: 7.097569
+
+Resultados para D = 64, R = 1152
+Media de ciclos: 8174.600000
+Media de ciclos por acceso a memoria: 7.096007
+
+Resultados para D = 64, R = 1152
+Media de ciclos: 8174.600000
+Media de ciclos por acceso a memoria: 7.096007
+
+Resultados para D = 64, R = 1152
+Media de ciclos: 8172.600000
+Media de ciclos por acceso a memoria: 7.094271
+
+Resultados para D = 64, R = 1152
+Media de ciclos: 8167.600000
+Media de ciclos por acceso a memoria: 7.089931
+
+Resultados para D = 64, R = 1152
+Media de ciclos: 8169.800000
+Media de ciclos por acceso a memoria: 7.091840
+
+Resultados para D = 64, R = 1152
+Media de ciclos: 9155.800000
+Media de ciclos por acceso a memoria: 7.947743
+
+Resultados para D = 64, R = 1152
+Media de ciclos: 8176.000000
+Media de ciclos por acceso a memoria: 7.097222
+
+Resultados para D = 64, R = 10240
+Media de ciclos: 72625.800000
+Media de ciclos por acceso a memoria: 7.092363
+
+Resultados para D = 64, R = 10240
+Media de ciclos: 72637.600000
+Media de ciclos por acceso a memoria: 7.093516
+
+Resultados para D = 64, R = 10240
+Media de ciclos: 73566.600000
+Media de ciclos por acceso a memoria: 7.184238
+
+Resultados para D = 64, R = 10240
+Media de ciclos: 72635.000000
+Media de ciclos por acceso a memoria: 7.093262
+
+Resultados para D = 64, R = 10240
+Media de ciclos: 72643.400000
+Media de ciclos por acceso a memoria: 7.094082
+
+Resultados para D = 64, R = 10240
+Media de ciclos: 72643.600000
+Media de ciclos por acceso a memoria: 7.094102
+
+Resultados para D = 64, R = 10240
+Media de ciclos: 72644.400000
+Media de ciclos por acceso a memoria: 7.094180
+
+Resultados para D = 64, R = 10240
+Media de ciclos: 72646.800000
+Media de ciclos por acceso a memoria: 7.094414
+
+Resultados para D = 64, R = 10240
+Media de ciclos: 72632.400000
+Media de ciclos por acceso a memoria: 7.093008
+
+Resultados para D = 64, R = 10240
+Media de ciclos: 72602.600000
+Media de ciclos por acceso a memoria: 7.090098
+
+Resultados para D = 64, R = 15360
+Media de ciclos: 109823.200000
+Media de ciclos por acceso a memoria: 7.149948
+
+Resultados para D = 64, R = 15360
+Media de ciclos: 108934.400000
+Media de ciclos por acceso a memoria: 7.092083
+
+Resultados para D = 64, R = 15360
+Media de ciclos: 109865.000000
+Media de ciclos por acceso a memoria: 7.152669
+
+Resultados para D = 64, R = 15360
+Media de ciclos: 108933.400000
+Media de ciclos por acceso a memoria: 7.092018
+
+Resultados para D = 64, R = 15360
+Media de ciclos: 109688.400000
+Media de ciclos por acceso a memoria: 7.141172
+
+Resultados para D = 64, R = 15360
+Media de ciclos: 109846.200000
+Media de ciclos por acceso a memoria: 7.151445
+
+Resultados para D = 64, R = 15360
+Media de ciclos: 109974.200000
+Media de ciclos por acceso a memoria: 7.159779
+
+Resultados para D = 64, R = 15360
+Media de ciclos: 108897.600000
+Media de ciclos por acceso a memoria: 7.089688
+
+Resultados para D = 64, R = 15360
+Media de ciclos: 109859.800000
+Media de ciclos por acceso a memoria: 7.152331
+
+Resultados para D = 64, R = 15360
+Media de ciclos: 108919.600000
+Media de ciclos por acceso a memoria: 7.091120
+
+Resultados para D = 64, R = 40960
+Media de ciclos: 291226.800000
+Media de ciclos por acceso a memoria: 7.110029
+
+Resultados para D = 64, R = 40960
+Media de ciclos: 292278.800000
+Media de ciclos por acceso a memoria: 7.135713
+
+Resultados para D = 64, R = 40960
+Media de ciclos: 291677.400000
+Media de ciclos por acceso a memoria: 7.121030
+
+Resultados para D = 64, R = 40960
+Media de ciclos: 291158.800000
+Media de ciclos por acceso a memoria: 7.108369
+
+Resultados para D = 64, R = 40960
+Media de ciclos: 292308.200000
+Media de ciclos por acceso a memoria: 7.136431
+
+Resultados para D = 64, R = 40960
+Media de ciclos: 291236.200000
+Media de ciclos por acceso a memoria: 7.110259
+
+Resultados para D = 64, R = 40960
+Media de ciclos: 292567.400000
+Media de ciclos por acceso a memoria: 7.142759
+
+Resultados para D = 64, R = 40960
+Media de ciclos: 291105.800000
+Media de ciclos por acceso a memoria: 7.107075
+
+Resultados para D = 64, R = 40960
+Media de ciclos: 291062.200000
+Media de ciclos por acceso a memoria: 7.106011
+
+Resultados para D = 64, R = 40960
+Media de ciclos: 291283.800000
+Media de ciclos por acceso a memoria: 7.111421
+
+Resultados para D = 64, R = 81920
+Media de ciclos: 582077.200000
+Media de ciclos por acceso a memoria: 7.105435
+
+Resultados para D = 64, R = 81920
+Media de ciclos: 581796.800000
+Media de ciclos por acceso a memoria: 7.102012
+
+Resultados para D = 64, R = 81920
+Media de ciclos: 582832.000000
+Media de ciclos por acceso a memoria: 7.114648
+
+Resultados para D = 64, R = 81920
+Media de ciclos: 583195.800000
+Media de ciclos por acceso a memoria: 7.119089
+
+Resultados para D = 64, R = 81920
+Media de ciclos: 582020.600000
+Media de ciclos por acceso a memoria: 7.104744
+
+Resultados para D = 64, R = 81920
+Media de ciclos: 582598.600000
+Media de ciclos por acceso a memoria: 7.111799
+
+Resultados para D = 64, R = 81920
+Media de ciclos: 581673.000000
+Media de ciclos por acceso a memoria: 7.100500
+
+Resultados para D = 64, R = 81920
+Media de ciclos: 582651.200000
+Media de ciclos por acceso a memoria: 7.112441
+
+Resultados para D = 64, R = 81920
+Media de ciclos: 583039.000000
+Media de ciclos por acceso a memoria: 7.117175
+
+Resultados para D = 64, R = 81920
+Media de ciclos: 581478.000000
+Media de ciclos por acceso a memoria: 7.098120
+
+Resultados para D = 64, R = 163840
+Media de ciclos: 1165027.400000
+Media de ciclos por acceso a memoria: 7.110763
+
+Resultados para D = 64, R = 163840
+Media de ciclos: 1166528.400000
+Media de ciclos por acceso a memoria: 7.119924
+
+Resultados para D = 64, R = 163840
+Media de ciclos: 1165489.600000
+Media de ciclos por acceso a memoria: 7.113584
+
+Resultados para D = 64, R = 163840
+Media de ciclos: 1168635.000000
+Media de ciclos por acceso a memoria: 7.132782
+
+Resultados para D = 64, R = 163840
+Media de ciclos: 1165022.200000
+Media de ciclos por acceso a memoria: 7.110731
+
+Resultados para D = 64, R = 163840
+Media de ciclos: 1165641.200000
+Media de ciclos por acceso a memoria: 7.114509
+
+Resultados para D = 64, R = 163840
+Media de ciclos: 1165487.400000
+Media de ciclos por acceso a memoria: 7.113571
+
+Resultados para D = 64, R = 163840
+Media de ciclos: 1165645.600000
+Media de ciclos por acceso a memoria: 7.114536
+
+Resultados para D = 64, R = 163840
+Media de ciclos: 1166670.600000
+Media de ciclos por acceso a memoria: 7.120792
+
+Resultados para D = 64, R = 163840
+Media de ciclos: 1167023.800000
+Media de ciclos por acceso a memoria: 7.122948
+
+Resultados para D = 256, R = 384
+Media de ciclos: 2741.600000
+Media de ciclos por acceso a memoria: 7.139583
+
+Resultados para D = 256, R = 384
+Media de ciclos: 2735.200000
+Media de ciclos por acceso a memoria: 7.122917
+
+Resultados para D = 256, R = 384
+Media de ciclos: 2740.600000
+Media de ciclos por acceso a memoria: 7.136979
+
+Resultados para D = 256, R = 384
+Media de ciclos: 2740.600000
+Media de ciclos por acceso a memoria: 7.136979
+
+Resultados para D = 256, R = 384
+Media de ciclos: 2739.800000
+Media de ciclos por acceso a memoria: 7.134896
+
+Resultados para D = 256, R = 384
+Media de ciclos: 2741.600000
+Media de ciclos por acceso a memoria: 7.139583
+
+Resultados para D = 256, R = 384
+Media de ciclos: 2744.800000
+Media de ciclos por acceso a memoria: 7.147917
+
+Resultados para D = 256, R = 384
+Media de ciclos: 2738.400000
+Media de ciclos por acceso a memoria: 7.131250
+
+Resultados para D = 256, R = 384
+Media de ciclos: 2741.800000
+Media de ciclos por acceso a memoria: 7.140104
+
+Resultados para D = 256, R = 384
+Media de ciclos: 2747.200000
+Media de ciclos por acceso a memoria: 7.154167
+
+Resultados para D = 256, R = 1152
+Media de ciclos: 8174.000000
+Media de ciclos por acceso a memoria: 7.095486
+
+Resultados para D = 256, R = 1152
+Media de ciclos: 8167.200000
+Media de ciclos por acceso a memoria: 7.089583
+
+Resultados para D = 256, R = 1152
+Media de ciclos: 8172.800000
+Media de ciclos por acceso a memoria: 7.094444
+
+Resultados para D = 256, R = 1152
+Media de ciclos: 9332.600000
+Media de ciclos por acceso a memoria: 8.101215
+
+Resultados para D = 256, R = 1152
+Media de ciclos: 8178.400000
+Media de ciclos por acceso a memoria: 7.099306
+
+Resultados para D = 256, R = 1152
+Media de ciclos: 8174.400000
+Media de ciclos por acceso a memoria: 7.095833
+
+Resultados para D = 256, R = 1152
+Media de ciclos: 8169.600000
+Media de ciclos por acceso a memoria: 7.091667
+
+Resultados para D = 256, R = 1152
+Media de ciclos: 8171.600000
+Media de ciclos por acceso a memoria: 7.093403
+
+Resultados para D = 256, R = 1152
+Media de ciclos: 8173.000000
+Media de ciclos por acceso a memoria: 7.094618
+
+Resultados para D = 256, R = 1152
+Media de ciclos: 8171.200000
+Media de ciclos por acceso a memoria: 7.093056
+
+Resultados para D = 256, R = 10240
+Media de ciclos: 72642.400000
+Media de ciclos por acceso a memoria: 7.093984
+
+Resultados para D = 256, R = 10240
+Media de ciclos: 72630.000000
+Media de ciclos por acceso a memoria: 7.092773
+
+Resultados para D = 256, R = 10240
+Media de ciclos: 72630.200000
+Media de ciclos por acceso a memoria: 7.092793
+
+Resultados para D = 256, R = 10240
+Media de ciclos: 72638.400000
+Media de ciclos por acceso a memoria: 7.093594
+
+Resultados para D = 256, R = 10240
+Media de ciclos: 72643.000000
+Media de ciclos por acceso a memoria: 7.094043
+
+Resultados para D = 256, R = 10240
+Media de ciclos: 72681.200000
+Media de ciclos por acceso a memoria: 7.097773
+
+Resultados para D = 256, R = 10240
+Media de ciclos: 73565.400000
+Media de ciclos por acceso a memoria: 7.184121
+
+Resultados para D = 256, R = 10240
+Media de ciclos: 72625.800000
+Media de ciclos por acceso a memoria: 7.092363
+
+Resultados para D = 256, R = 10240
+Media de ciclos: 72627.000000
+Media de ciclos por acceso a memoria: 7.092480
+
+Resultados para D = 256, R = 10240
+Media de ciclos: 72623.000000
+Media de ciclos por acceso a memoria: 7.092090
+
+Resultados para D = 256, R = 15360
+Media de ciclos: 108941.800000
+Media de ciclos por acceso a memoria: 7.092565
+
+Resultados para D = 256, R = 15360
+Media de ciclos: 109823.600000
+Media de ciclos por acceso a memoria: 7.149974
+
+Resultados para D = 256, R = 15360
+Media de ciclos: 108901.200000
+Media de ciclos por acceso a memoria: 7.089922
+
+Resultados para D = 256, R = 15360
+Media de ciclos: 110104.800000
+Media de ciclos por acceso a memoria: 7.168281
+
+Resultados para D = 256, R = 15360
+Media de ciclos: 108938.000000
+Media de ciclos por acceso a memoria: 7.092318
+
+Resultados para D = 256, R = 15360
+Media de ciclos: 108931.400000
+Media de ciclos por acceso a memoria: 7.091888
+
+Resultados para D = 256, R = 15360
+Media de ciclos: 109796.800000
+Media de ciclos por acceso a memoria: 7.148229
+
+Resultados para D = 256, R = 15360
+Media de ciclos: 108906.200000
+Media de ciclos por acceso a memoria: 7.090247
+
+Resultados para D = 256, R = 15360
+Media de ciclos: 108951.000000
+Media de ciclos por acceso a memoria: 7.093164
+
+Resultados para D = 256, R = 15360
+Media de ciclos: 110099.200000
+Media de ciclos por acceso a memoria: 7.167917
+
+Resultados para D = 256, R = 40960
+Media de ciclos: 292677.000000
+Media de ciclos por acceso a memoria: 7.145435
+
+Resultados para D = 256, R = 40960
+Media de ciclos: 291338.800000
+Media de ciclos por acceso a memoria: 7.112764
+
+Resultados para D = 256, R = 40960
+Media de ciclos: 292356.200000
+Media de ciclos por acceso a memoria: 7.137603
+
+Resultados para D = 256, R = 40960
+Media de ciclos: 291933.600000
+Media de ciclos por acceso a memoria: 7.127285
+
+Resultados para D = 256, R = 40960
+Media de ciclos: 291172.400000
+Media de ciclos por acceso a memoria: 7.108701
+
+Resultados para D = 256, R = 40960
+Media de ciclos: 291026.400000
+Media de ciclos por acceso a memoria: 7.105137
+
+Resultados para D = 256, R = 40960
+Media de ciclos: 291581.800000
+Media de ciclos por acceso a memoria: 7.118696
+
+Resultados para D = 256, R = 40960
+Media de ciclos: 292445.600000
+Media de ciclos por acceso a memoria: 7.139785
+
+Resultados para D = 256, R = 40960
+Media de ciclos: 291940.400000
+Media de ciclos por acceso a memoria: 7.127451
+
+Resultados para D = 256, R = 40960
+Media de ciclos: 290740.000000
+Media de ciclos por acceso a memoria: 7.098145
+
+Resultados para D = 256, R = 81920
+Media de ciclos: 583016.000000
+Media de ciclos por acceso a memoria: 7.116895
+
+Resultados para D = 256, R = 81920
+Media de ciclos: 581890.600000
+Media de ciclos por acceso a memoria: 7.103157
+
+Resultados para D = 256, R = 81920
+Media de ciclos: 582863.000000
+Media de ciclos por acceso a memoria: 7.115027
+
+Resultados para D = 256, R = 81920
+Media de ciclos: 582267.200000
+Media de ciclos por acceso a memoria: 7.107754
+
+Resultados para D = 256, R = 81920
+Media de ciclos: 584108.400000
+Media de ciclos por acceso a memoria: 7.130229
+
+Resultados para D = 256, R = 81920
+Media de ciclos: 581291.000000
+Media de ciclos por acceso a memoria: 7.095837
+
+Resultados para D = 256, R = 81920
+Media de ciclos: 582731.400000
+Media de ciclos por acceso a memoria: 7.113420
+
+Resultados para D = 256, R = 81920
+Media de ciclos: 582757.600000
+Media de ciclos por acceso a memoria: 7.113740
+
+Resultados para D = 256, R = 81920
+Media de ciclos: 581747.400000
+Media de ciclos por acceso a memoria: 7.101409
+
+Resultados para D = 256, R = 81920
+Media de ciclos: 583156.200000
+Media de ciclos por acceso a memoria: 7.118606
+
+Resultados para D = 256, R = 163840
+Media de ciclos: 1166393.400000
+Media de ciclos por acceso a memoria: 7.119100
+
+Resultados para D = 256, R = 163840
+Media de ciclos: 1167338.200000
+Media de ciclos por acceso a memoria: 7.124867
+
+Resultados para D = 256, R = 163840
+Media de ciclos: 1164768.200000
+Media de ciclos por acceso a memoria: 7.109181
+
+Resultados para D = 256, R = 163840
+Media de ciclos: 1165519.600000
+Media de ciclos por acceso a memoria: 7.113767
+
+Resultados para D = 256, R = 163840
+Media de ciclos: 1165554.600000
+Media de ciclos por acceso a memoria: 7.113981
+
+Resultados para D = 256, R = 163840
+Media de ciclos: 1165324.200000
+Media de ciclos por acceso a memoria: 7.112574
+
+Resultados para D = 256, R = 163840
+Media de ciclos: 1165817.400000
+Media de ciclos por acceso a memoria: 7.115585
+
+Resultados para D = 256, R = 163840
+Media de ciclos: 1167724.000000
+Media de ciclos por acceso a memoria: 7.127222
+
+Resultados para D = 256, R = 163840
+Media de ciclos: 1164988.200000
+Media de ciclos por acceso a memoria: 7.110524
+
+Resultados para D = 256, R = 163840
+Media de ciclos: 1166333.200000
+Media de ciclos por acceso a memoria: 7.118733
+
+Resultados para D = 1024, R = 384
+Media de ciclos: 2742.000000
+Media de ciclos por acceso a memoria: 7.140625
+
+Resultados para D = 1024, R = 384
+Media de ciclos: 2742.000000
+Media de ciclos por acceso a memoria: 7.140625
+
+Resultados para D = 1024, R = 384
+Media de ciclos: 2740.800000
+Media de ciclos por acceso a memoria: 7.137500
+
+Resultados para D = 1024, R = 384
+Media de ciclos: 2740.200000
+Media de ciclos por acceso a memoria: 7.135937
+
+Resultados para D = 1024, R = 384
+Media de ciclos: 2742.800000
+Media de ciclos por acceso a memoria: 7.142708
+
+Resultados para D = 1024, R = 384
+Media de ciclos: 2736.800000
+Media de ciclos por acceso a memoria: 7.127083
+
+Resultados para D = 1024, R = 384
+Media de ciclos: 2741.800000
+Media de ciclos por acceso a memoria: 7.140104
+
+Resultados para D = 1024, R = 384
+Media de ciclos: 2741.400000
+Media de ciclos por acceso a memoria: 7.139062
+
+Resultados para D = 1024, R = 384
+Media de ciclos: 2741.200000
+Media de ciclos por acceso a memoria: 7.138542
+
+Resultados para D = 1024, R = 384
+Media de ciclos: 2744.000000
+Media de ciclos por acceso a memoria: 7.145833
+
+Resultados para D = 1024, R = 1152
+Media de ciclos: 8172.600000
+Media de ciclos por acceso a memoria: 7.094271
+
+Resultados para D = 1024, R = 1152
+Media de ciclos: 8173.000000
+Media de ciclos por acceso a memoria: 7.094618
+
+Resultados para D = 1024, R = 1152
+Media de ciclos: 8173.000000
+Media de ciclos por acceso a memoria: 7.094618
+
+Resultados para D = 1024, R = 1152
+Media de ciclos: 8175.800000
+Media de ciclos por acceso a memoria: 7.097049
+
+Resultados para D = 1024, R = 1152
+Media de ciclos: 8171.400000
+Media de ciclos por acceso a memoria: 7.093229
+
+Resultados para D = 1024, R = 1152
+Media de ciclos: 8168.800000
+Media de ciclos por acceso a memoria: 7.090972
+
+Resultados para D = 1024, R = 1152
+Media de ciclos: 8173.000000
+Media de ciclos por acceso a memoria: 7.094618
+
+Resultados para D = 1024, R = 1152
+Media de ciclos: 8173.800000
+Media de ciclos por acceso a memoria: 7.095313
+
+Resultados para D = 1024, R = 1152
+Media de ciclos: 8177.400000
+Media de ciclos por acceso a memoria: 7.098438
+
+Resultados para D = 1024, R = 1152
+Media de ciclos: 8166.800000
+Media de ciclos por acceso a memoria: 7.089236
+
+Resultados para D = 1024, R = 10240
+Media de ciclos: 73470.400000
+Media de ciclos por acceso a memoria: 7.174844
+
+Resultados para D = 1024, R = 10240
+Media de ciclos: 72637.000000
+Media de ciclos por acceso a memoria: 7.093457
+
+Resultados para D = 1024, R = 10240
+Media de ciclos: 72638.000000
+Media de ciclos por acceso a memoria: 7.093555
+
+Resultados para D = 1024, R = 10240
+Media de ciclos: 73519.200000
+Media de ciclos por acceso a memoria: 7.179609
+
+Resultados para D = 1024, R = 10240
+Media de ciclos: 72616.600000
+Media de ciclos por acceso a memoria: 7.091465
+
+Resultados para D = 1024, R = 10240
+Media de ciclos: 72629.800000
+Media de ciclos por acceso a memoria: 7.092754
+
+Resultados para D = 1024, R = 10240
+Media de ciclos: 73551.800000
+Media de ciclos por acceso a memoria: 7.182793
+
+Resultados para D = 1024, R = 10240
+Media de ciclos: 72652.400000
+Media de ciclos por acceso a memoria: 7.094961
+
+Resultados para D = 1024, R = 10240
+Media de ciclos: 72625.800000
+Media de ciclos por acceso a memoria: 7.092363
+
+Resultados para D = 1024, R = 10240
+Media de ciclos: 72646.000000
+Media de ciclos por acceso a memoria: 7.094336
+
+Resultados para D = 1024, R = 15360
+Media de ciclos: 108917.200000
+Media de ciclos por acceso a memoria: 7.090964
+
+Resultados para D = 1024, R = 15360
+Media de ciclos: 108920.800000
+Media de ciclos por acceso a memoria: 7.091198
+
+Resultados para D = 1024, R = 15360
+Media de ciclos: 109968.000000
+Media de ciclos por acceso a memoria: 7.159375
+
+Resultados para D = 1024, R = 15360
+Media de ciclos: 109923.000000
+Media de ciclos por acceso a memoria: 7.156445
+
+Resultados para D = 1024, R = 15360
+Media de ciclos: 108934.200000
+Media de ciclos por acceso a memoria: 7.092070
+
+Resultados para D = 1024, R = 15360
+Media de ciclos: 108964.800000
+Media de ciclos por acceso a memoria: 7.094062
+
+Resultados para D = 1024, R = 15360
+Media de ciclos: 109775.800000
+Media de ciclos por acceso a memoria: 7.146862
+
+Resultados para D = 1024, R = 15360
+Media de ciclos: 108921.200000
+Media de ciclos por acceso a memoria: 7.091224
+
+Resultados para D = 1024, R = 15360
+Media de ciclos: 110230.800000
+Media de ciclos por acceso a memoria: 7.176484
+
+Resultados para D = 1024, R = 15360
+Media de ciclos: 108924.800000
+Media de ciclos por acceso a memoria: 7.091458
+
+Resultados para D = 1024, R = 40960
+Media de ciclos: 291371.800000
+Media de ciclos por acceso a memoria: 7.113569
+
+Resultados para D = 1024, R = 40960
+Media de ciclos: 291486.200000
+Media de ciclos por acceso a memoria: 7.116362
+
+Resultados para D = 1024, R = 40960
+Media de ciclos: 292197.800000
+Media de ciclos por acceso a memoria: 7.133735
+
+Resultados para D = 1024, R = 40960
+Media de ciclos: 292020.000000
+Media de ciclos por acceso a memoria: 7.129395
+
+Resultados para D = 1024, R = 40960
+Media de ciclos: 293565.200000
+Media de ciclos por acceso a memoria: 7.167119
+
+Resultados para D = 1024, R = 40960
+Media de ciclos: 291257.800000
+Media de ciclos por acceso a memoria: 7.110786
+
+Resultados para D = 1024, R = 40960
+Media de ciclos: 291778.000000
+Media de ciclos por acceso a memoria: 7.123486
+
+Resultados para D = 1024, R = 40960
+Media de ciclos: 291397.000000
+Media de ciclos por acceso a memoria: 7.114185
+
+Resultados para D = 1024, R = 40960
+Media de ciclos: 293007.000000
+Media de ciclos por acceso a memoria: 7.153491
+
+Resultados para D = 1024, R = 40960
+Media de ciclos: 290924.600000
+Media de ciclos por acceso a memoria: 7.102651
+
+Resultados para D = 1024, R = 81920
+Media de ciclos: 582460.400000
+Media de ciclos por acceso a memoria: 7.110112
+
+Resultados para D = 1024, R = 81920
+Media de ciclos: 583201.400000
+Media de ciclos por acceso a memoria: 7.119158
+
+Resultados para D = 1024, R = 81920
+Media de ciclos: 583377.000000
+Media de ciclos por acceso a memoria: 7.121301
+
+Resultados para D = 1024, R = 81920
+Media de ciclos: 582849.400000
+Media de ciclos por acceso a memoria: 7.114861
+
+Resultados para D = 1024, R = 81920
+Media de ciclos: 581962.800000
+Media de ciclos por acceso a memoria: 7.104038
+
+Resultados para D = 1024, R = 81920
+Media de ciclos: 582411.400000
+Media de ciclos por acceso a memoria: 7.109514
+
+Resultados para D = 1024, R = 81920
+Media de ciclos: 582045.400000
+Media de ciclos por acceso a memoria: 7.105046
+
+Resultados para D = 1024, R = 81920
+Media de ciclos: 584299.000000
+Media de ciclos por acceso a memoria: 7.132556
+
+Resultados para D = 1024, R = 81920
+Media de ciclos: 583183.800000
+Media de ciclos por acceso a memoria: 7.118943
+
+Resultados para D = 1024, R = 81920
+Media de ciclos: 583737.400000
+Media de ciclos por acceso a memoria: 7.125701
+
+Resultados para D = 1024, R = 163840
+Media de ciclos: 1165165.600000
+Media de ciclos por acceso a memoria: 7.111606
+
+Resultados para D = 1024, R = 163840
+Media de ciclos: 1165288.800000
+Media de ciclos por acceso a memoria: 7.112358
+
+Resultados para D = 1024, R = 163840
+Media de ciclos: 1166640.200000
+Media de ciclos por acceso a memoria: 7.120607
+
+Resultados para D = 1024, R = 163840
+Media de ciclos: 1165332.400000
+Media de ciclos por acceso a memoria: 7.112625
+
+Resultados para D = 1024, R = 163840
+Media de ciclos: 1164817.000000
+Media de ciclos por acceso a memoria: 7.109479
+
+Resultados para D = 1024, R = 163840
+Media de ciclos: 1165450.000000
+Media de ciclos por acceso a memoria: 7.113342
+
+Resultados para D = 1024, R = 163840
+Media de ciclos: 1166435.000000
+Media de ciclos por acceso a memoria: 7.119354
+
+Resultados para D = 1024, R = 163840
+Media de ciclos: 1164209.400000
+Media de ciclos por acceso a memoria: 7.105770
+
+Resultados para D = 1024, R = 163840
+Media de ciclos: 1165257.200000
+Media de ciclos por acceso a memoria: 7.112166
+
+Resultados para D = 1024, R = 163840
+Media de ciclos: 1165164.600000
+Media de ciclos por acceso a memoria: 7.111600
+
