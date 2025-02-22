@@ -130,7 +130,7 @@ int main(int argc, char* argv[]) {
     start_counter();
     for(int i = 0; i < 10; i++) {
         S[i] = 0.0;
-        for(int j = 0; j < R; j++) {
+        for(int j = 0; j < R; j++) { //Como debemos ter en conta o D, accedemos a A con saltos de D. Debido a esto, o bucle vai de 0 a R.
             S[i] += A[j*D];
         }
     }
