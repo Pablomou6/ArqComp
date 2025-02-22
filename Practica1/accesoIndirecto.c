@@ -3,6 +3,7 @@
 #include <math.h>
 #include <time.h>
 #include <unistd.h>
+#include <math.h>
 
 #define CACHE_LINE_SIZE 64
 
@@ -71,14 +72,12 @@ int main(int argc, char* argv[]) {
     //Declaramos la semilla para los número aleatorios
     srand(time(NULL));
 
-    //Tamaño que terá o vector A
-    int R = -1; 
+    //Número de elementos de A
+    unsigned long R = -1; 
     //Valor do parámetro de localidad, espaciado entre elemntos
-    int D = -1;
+    unsigned long D = -1;
     //Declaramos o vector A 
     double* A = NULL; 
-    //Variable na que iremos acumulando a reducción
-    double sum = 0.0;
     //Declaramos o vector S, que almacenará os resultados. O tamaño deste será 10
     double* S = NULL;
     //Variable para contabilizar os ciclos
@@ -96,13 +95,13 @@ int main(int argc, char* argv[]) {
         printf("No se especificaron los valores de D y R\n");
         return EXIT_FAILURE;
     }
-    //Recuperamos os valores de D e R
+    //Recuperamos o valor de D. R calculase como o valor de L introducido polo script, multiplicado por 8/D; por moi grande que sea D, ceil(8/D) será 1 mínimo
     D = atoi(argv[1]);
-    R = atoi(argv[2]);
+    R = atoi(argv[2]) * ceil(8.0/D);
 
     //Creamos o vector que nos permitirá acceder a elementos de A de forma indirecta
     //Reservamos dinámicamente para almacenalo no Heap, xa que desa forma evitamos overflow de pila en tamaños moi grandes
-    int* ind = (int*)malloc(R * sizeof(int));
+    unsigned long* ind = (unsigned long*)malloc(R * sizeof(unsigned long));
     if(!ind) {
         printf("No se ha reservado memoria para el vector ind.\n");
         return EXIT_FAILURE;
@@ -111,24 +110,15 @@ int main(int argc, char* argv[]) {
         ind[i] = i * D;
     }
 
+    //Calculamos o tamaño do vector A  
+    unsigned long size = R * D;  
+
     /*  
         En aligned_alloc, o primeiro parámetro é o alineamiento (tamño da línea caché, debe ser potencia de 2)
         O segundo parámetro é o tamaño do vector
-        Debemos asegurarnos que o tamaño reservado, sexa múltiplo de, en este caso, o tamaño da línea caché
     */
-
-    /*
-        Calculamos o tamaño de A en bytes. Dado que o parámetro de R xa está calculado, debemos multiplicar por D e 
-        polo tamaño dun double para obter o tamaño en bytes.
-    */
-    size_t size = R * D * sizeof(double);
-    if (size % CACHE_LINE_SIZE != 0) {
-        //Asegurámonos de que sexa múltiplo de 64, xa que a dvisión encárgase de truncar
-        size = ((size / CACHE_LINE_SIZE) + 1) * CACHE_LINE_SIZE; 
-    }   
-
     //Reservamos memoria para A. Debemos especificar o tamaño e o alineamiento
-    A = (double*)aligned_alloc(CACHE_LINE_SIZE, size);
+    A = (double*)aligned_alloc(CACHE_LINE_SIZE, size*sizeof(double));
     //Comprobamos que se reservase memoria correctamente
     if (!A) {
         printf("Error al asignar memoria para A\n");
@@ -136,7 +126,7 @@ int main(int argc, char* argv[]) {
     }
     
     //Inicializamos o vector A con valores aleatorios no intervalo [-1, 2)
-    for(int i = 0; i < R; i++) {
+    for(int i = 0; i < size; i++) {
         //Nos aseguramos que nunca genere un 1 aleatoriamente al sumar el +1.0
         A[i] = ((double)rand() / (RAND_MAX + 1.0)) * 3 - 1;
     }
@@ -145,11 +135,10 @@ int main(int argc, char* argv[]) {
     //Ademais, o contador é inicializado, mediremos os ciclos.
     start_counter();
     for(int i = 0; i < 10; i++) {
+        S[i] = 0.0;
         for(int j = 0; j < R; j++) {
-            sum += A[ind[j]];
+            S[i] += A[ind[j]];
         }
-        S[i] = sum;
-        sum = 0.0;
     }
     ck = get_counter();
     
@@ -186,7 +175,7 @@ int main(int argc, char* argv[]) {
     printf("\n");
 
     FILE* doc = fopen("accesoIndirectoResultadosDouble.txt", "a+");
-    fprintf(doc, "Resultados para D = %d, R = %d\n", D, R);
+    fprintf(doc, "Resultados para D = %ld, L = %d\n", D, atoi(argv[2]));
     fprintf(doc, "Media de ciclos: %lf\n", avgck);
     fprintf(doc, "Media de ciclos por acceso a memoria: %lf\n", avgAccesosCiclo);
     fprintf(doc, "\n");
