@@ -7,8 +7,8 @@
 
 # Sustituir los valores de Di y Li por los calculados para la realización de la práctica.
 
-gcc accesoIndirecto.c -o acp1 -msse3 -O0 -lm
-#gcc accesoDirecto.c -o acp2 -msse3 -O0 -lm
+#gcc accesoIndirecto.c -o acp1 -msse3 -O0 -lm
+gcc accesoDirecto.c -o acp2 -msse3 -O0 -lm
 #gcc accesoIndirectoInt.c -o acp3 -msse3 -O0 -lm
 
 
@@ -19,8 +19,8 @@ do
 		for i in {1..10}
 		do
 			echo "Valores: D = $D, L = $L; iteración = $i"
-			./acp1 $D $L
-			#./acp2 $D $L
+			#./acp1 $D $L
+			./acp2 $D $L
 			#./acp3 $D $L 
 		done
 		echo "-----------------------------------------"
