@@ -1,3 +1,9 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include "counter.h"
+#include <time.h>
+
 /*
     Entradas:
         a: Matriz de coeficientes del sistema (float[n x n])
@@ -8,30 +14,9 @@
 
     Variables auxiliares:
         x_new: Vector nueva solución (float[n])
-
-    Cómputo:
-        Para iter (int) desde 0 hasta iter:
-            norm2 = 0: norma del vector al cuadrado (float)
-            Para i (int) desde 0 hasta n:
-                sigma = 0.0 (float)
-                Para j desde 0 hasta n:
-                    Si i ≠ j:
-                        sigma += a[i][j] * x[j]
-                x_new[i] = (b[i] - sigma) / a[i][i]
-                norm2 += (x_new[i] - x[i]) ^ 2
-            x = x_new
-            Si srqt(norm2) < tol:
-                Terminar
-
-    Salida:
-        Imprimir valor de norm2
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-
-int n = 0;
+int n = 200;
 
 void originalJacobi(float a[n][n], float b[n], float x[n], float tol, int max_iter) {
     float *x_new = (float*)malloc(n*sizeof(float));
@@ -52,4 +37,30 @@ void originalJacobi(float a[n][n], float b[n], float x[n], float tol, int max_it
             break;
         }
     }
+}
+
+int main(int argc, char *argv[]) {
+    srand(time(NULL));
+
+    double ck = 0;
+    float a[n][n];
+    float b[n];
+    float x[n];
+    float tol = 1e-6;
+    int max_iter = 20000;
+
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < n; j++) {
+            a[i][j] = (float)rand() / RAND_MAX;
+        }
+        b[i] = (float)rand() / RAND_MAX;
+        x[i] = 0;
+    }
+    
+    start_counter();
+    originalJacobi(a, b, x, tol, max_iter);
+    ck = get_counter();
+
+    printf("Ciclos: %.0f\n", ck);
+    return 0;   
 }
