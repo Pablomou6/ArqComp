@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
     float a[n][n];
     float b[n];
     float x[n];
-    float tol = 1e-6;
+    float tol = 1e-8;
     int max_iter = 20000;
 
     for(int i = 0; i < n; i++) {
