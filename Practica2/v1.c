@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "counter.h"
 #include <time.h>
+#include "counter.h"
 
 /*
     Entradas:
@@ -16,11 +16,12 @@
         x_new: Vector nueva solución (float[n])
 */
 
-int n = 200;
+int n;
 
 void originalJacobi(float a[n][n], float b[n], float x[n], float tol, int max_iter) {
+    int iter;
     float *x_new = (float*)malloc(n*sizeof(float));
-    for(int iter = 0; iter < max_iter; iter++) {
+    for(iter = 0; iter < max_iter; iter++) {
         float norm2 = 0;
         for(int i = 0; i < n; i++) {
             float sigma = 0.0;
@@ -32,15 +33,21 @@ void originalJacobi(float a[n][n], float b[n], float x[n], float tol, int max_it
             x_new[i] = (b[i] - sigma) / a[i][i];
             norm2 += (x_new[i] - x[i]) * (x_new[i] - x[i]);
         }
-        x = x_new;
+        // Copiar los valores de x_new a x
+        for (int i = 0; i < n; i++) {
+            x[i] = x_new[i];
+        }
         if(sqrt(norm2) < tol) {
             break;
         }
     }
+    printf("Iteraciones: %d\n", iter);
 }
 
 int main(int argc, char *argv[]) {
     srand(time(NULL));
+
+    n = atoi(argv[1]);
 
     double ck = 0;
     float a[n][n];
@@ -48,8 +55,9 @@ int main(int argc, char *argv[]) {
     float x[n];
     float tol = 1e-8;
     int max_iter = 20000;
+    int i = 0;
 
-    for(int i = 0; i < n; i++) {
+    for(i = 0; i < n; i++) {
         for(int j = 0; j < n; j++) {
             a[i][j] = (float)rand() / RAND_MAX;
         }
