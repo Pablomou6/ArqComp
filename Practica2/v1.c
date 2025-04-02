@@ -20,7 +20,7 @@ int n;
 
 void originalJacobi(float a[n][n], float b[n], float x[n], float tol, int max_iter) {
     int iter;
-    float *x_new = (float*)malloc(n*sizeof(float));
+    float *x_new = (float*)aligned_alloc(64, n*sizeof(float));
     for(iter = 0; iter < max_iter; iter++) {
         float norm2 = 0;
         for(int i = 0; i < n; i++) {
@@ -41,6 +41,7 @@ void originalJacobi(float a[n][n], float b[n], float x[n], float tol, int max_it
             break;
         }
     }
+    free(x_new);
     printf("Iteraciones: %d\n", iter);
 }
 

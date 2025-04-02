@@ -2,6 +2,7 @@
 #ifndef COUNTER_H
 #define COUNTER_H
 
+#include <stdio.h>
 #include <unistd.h>
 
 
