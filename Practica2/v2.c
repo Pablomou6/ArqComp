@@ -23,15 +23,19 @@ int n = 0;
      
 */
 
+
+float norm2 = 0;
+int iter = 0;
+
 void v2Jacobi(float* a, float* b, float* x, float tol, int max_iter) {
     float *x_new = (float*)malloc(n*sizeof(float));
-    int iter = 0;
+    iter = 0;
 
     int i = 0;
     int j = 0;
 
     for(iter = 0; iter < max_iter; iter++) {
-        float norm2 = 0;
+        norm2 = 0;
 
         //Iteraciones sobre las filas. El acceso será secuencial, según lo explicado anteriormente
         for(i = 0; i < n; i++) {
@@ -80,7 +84,6 @@ void v2Jacobi(float* a, float* b, float* x, float tol, int max_iter) {
     }
 
     free(x_new);    
-    printf("Iteraciones: %d\n", iter);
 }
 
 /*
@@ -168,6 +171,8 @@ int main(int argc, char *argv[]) {
     ck = get_counter();
 
     printf("Ciclos: %.0f\n", ck);
+    printf("Iteraciones: %d\n", iter);
+    printf("Norma: %f\n", sqrt(norm2));
 
     free(a);
     free(b);

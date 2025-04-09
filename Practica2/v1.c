@@ -17,12 +17,14 @@
 */
 
 int n;
+float norm2 = 0;
+int iter = 0;
 
 void originalJacobi(float** a, float* b, float* x, float tol, int max_iter) {
-    int iter;
+    iter = 0;
     float *x_new = (float*)aligned_alloc(64, n*sizeof(float));
     for(iter = 0; iter < max_iter; iter++) {
-        float norm2 = 0;
+        norm2 = 0;
         for(int i = 0; i < n; i++) {
             float sigma = 0.0;
             for(int j = 0; j < n; j++) {
@@ -42,7 +44,6 @@ void originalJacobi(float** a, float* b, float* x, float tol, int max_iter) {
         }
     }
     free(x_new);
-    printf("Iteraciones: %d\n", iter);
 }
 
 int main(int argc, char *argv[]) {
@@ -76,5 +77,12 @@ int main(int argc, char *argv[]) {
     ck = get_counter();
 
     printf("Ciclos: %.0f\n", ck);
+    printf("Iteraciones: %d\n", iter);
+    printf("Norma: %f\n", sqrt(norm2));
+
+    free(a);
+    free(b);
+    free(x);
+
     return 0;   
 }
