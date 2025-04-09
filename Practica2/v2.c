@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
+#include "counter.h"
 
 int n = 0;
 
@@ -85,7 +87,7 @@ void v2Jacobi(float* a, float* b, float* x, float tol, int max_iter) {
 void v2Jacobi(float* a, float* b, float* x, float tol, int max_iter) {
     float *x_new = (float*)malloc(n * sizeof(float));
 
-    /*Lo ajustamos según el tamaño de la caché L1 (49 152 bytes). Queremos que un bloque quepa entero en L1, por lo que, de igual forma que reservamos 
+    Lo ajustamos según el tamaño de la caché L1 (49 152 bytes). Queremos que un bloque quepa entero en L1, por lo que, de igual forma que reservamos 
     memoria para la matriz, un bloque ocupará ? * ? * sizeof(float) bytes. Entonces, eso debe ser <= que L1:
     block_size² <= 49 152/sizeof(float); B² <= 12 288; B <= 111; B = 64/
     int block_size = 64;  
@@ -134,6 +136,13 @@ void v2Jacobi(float* a, float* b, float* x, float tol, int max_iter) {
 int main(int argc, char *argv[]) {
     srand(time(NULL));
 
+    //Comprobamos el número de argumentos
+    if(argc != 2) {
+        printf("Error de entrada, se debe introducir el valor de n como argumento.\n");
+        return EXIT_FAILURE;
+    }
+    n = atoi(argv[1]);
+
     double ck = 0;
     //Se usa conjuntamente en el bucle a con x
     float* a = (float*)aligned_alloc(64, n*n*sizeof(float));
@@ -144,11 +153,14 @@ int main(int argc, char *argv[]) {
     int max_iter = 20000;
 
     for(int i = 0; i < n; i++) {
+        float row_sum = 0.0;
         for(int j = 0; j < n; j++) {
             a[i * n + j] = (float)rand() / RAND_MAX;
+            row_sum += a[i * n + j];
         }
+        a[i * n + i] += row_sum;
         b[i] = (float)rand() / RAND_MAX;
-        x[i] = 0;
+        x[i] = 0.0;
     }
     
     start_counter();

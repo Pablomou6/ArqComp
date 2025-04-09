@@ -18,7 +18,7 @@
 
 int n;
 
-void originalJacobi(float a[n][n], float b[n], float x[n], float tol, int max_iter) {
+void originalJacobi(float** a, float* b, float* x, float tol, int max_iter) {
     int iter;
     float *x_new = (float*)aligned_alloc(64, n*sizeof(float));
     for(iter = 0; iter < max_iter; iter++) {
@@ -51,19 +51,24 @@ int main(int argc, char *argv[]) {
     n = atoi(argv[1]);
 
     double ck = 0;
-    float a[n][n];
-    float b[n];
-    float x[n];
+    float** a = (float**)aligned_alloc(64, n * sizeof(float*));
+    for (int i = 0; i < n; i++) {
+        a[i] = (float*)aligned_alloc(64, n * sizeof(float));
+    }
+    float* x = (float*)aligned_alloc(64, n*sizeof(float));
+    float* b = (float*)aligned_alloc(64, n*sizeof(float));
     float tol = 1e-8;
     int max_iter = 20000;
-    int i = 0;
 
-    for(i = 0; i < n; i++) {
+    for(int i = 0; i < n; i++) {
+        float row_sum = 0.0;
         for(int j = 0; j < n; j++) {
             a[i][j] = (float)rand() / RAND_MAX;
+            row_sum += a[i][j];
         }
+        a[i][i] += row_sum;
         b[i] = (float)rand() / RAND_MAX;
-        x[i] = 0;
+        x[i] = 0.0;
     }
     
     start_counter();
