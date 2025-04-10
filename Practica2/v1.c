@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <time.h>
 #include "counter.h"
 
 /*
@@ -16,50 +15,110 @@
         x_new: Vector nueva solución (float[n])
 */
 
-int n;
-float norm2 = 0;
+//Definimos ciertas constantes
+#define TOL 1e-8
+#define MAX_ITER 20000
+
+//Definimos variables globales
+int n = 0;
 int iter = 0;
+float norm2 = 0;
+float* x_new = NULL;
 
 void originalJacobi(float** a, float* b, float* x, float tol, int max_iter) {
-    iter = 0;
-    float *x_new = (float*)aligned_alloc(64, n*sizeof(float));
+    
     for(iter = 0; iter < max_iter; iter++) {
         norm2 = 0;
+
         for(int i = 0; i < n; i++) {
             float sigma = 0.0;
+
             for(int j = 0; j < n; j++) {
                 if(i != j) {
                     sigma += a[i][j] * x[j];
                 }
             }
+
             x_new[i] = (b[i] - sigma) / a[i][i];
             norm2 += (x_new[i] - x[i]) * (x_new[i] - x[i]);
         }
-        // Copiar los valores de x_new a x
+        
         for (int i = 0; i < n; i++) {
             x[i] = x_new[i];
         }
-        if(sqrt(norm2) < tol) {
+
+        if(sqrtf(norm2) < tol) {
             break;
         }
     }
-    free(x_new);
 }
 
-int main(int argc, char *argv[]) {
-    srand(time(NULL));
 
+
+int main(int argc, char* argv[]) {
+
+    if(argc != 2) {
+        printf("Error de entrada, se debe especificar el tamaño de la matriz como argumento.\n");
+        return EXIT_FAILURE;
+    }
+
+    //Recuperamos el valor de n introducido por parámetros
     n = atoi(argv[1]);
-
-    double ck = 0;
+    
+    //Reservamos memoria dinámica para las estructuras de datos que dependen de n
     float** a = (float**)aligned_alloc(64, n * sizeof(float*));
+    if (a == NULL) {
+        printf("Error al reservar memoria para la matriz.\n");
+        return EXIT_FAILURE;
+    }
     for (int i = 0; i < n; i++) {
         a[i] = (float*)aligned_alloc(64, n * sizeof(float));
+        if (a[i] == NULL) {
+            printf("Error al reservar memoria para la fila %d de la matriz.\n", i);
+            for (int j = 0; j < i; j++) {
+                free(a[j]);
+            }
+            free(a);
+            return EXIT_FAILURE;
+        }
     }
-    float* x = (float*)aligned_alloc(64, n*sizeof(float));
-    float* b = (float*)aligned_alloc(64, n*sizeof(float));
-    float tol = 1e-8;
-    int max_iter = 20000;
+
+    float* b = (float*)aligned_alloc(64, n * sizeof(float));
+    if(b == NULL) {
+        printf("Error al reservar memoria para el vector de términos independientes.\n");
+        for (int i = 0; i < n; i++) {
+            free(a[i]);
+        }
+        free(a);
+        return EXIT_FAILURE;
+    }
+
+    float* x = (float*)aligned_alloc(64, n * sizeof(float));
+    if(x == NULL) {
+        printf("Error al reservar memoria para el vector solución.\n");
+        for (int i = 0; i < n; i++) {
+            free(a[i]);
+        }
+        free(a);
+        free(b);
+        return EXIT_FAILURE;
+    }
+    
+    x_new = (float*)aligned_alloc(64, n * sizeof(float));
+    if(x_new == NULL) {
+        printf("Error al reservar memoria para el vector nueva solución.\n");
+        for (int i = 0; i < n; i++) {
+            free(a[i]);
+        }
+        free(a);
+        free(b);
+        free(x);
+        return EXIT_FAILURE;
+    }
+
+    //Inicializamos la matriz y los vectores.
+    //Declaramos la semilla para  rand() con N.
+    srand(n);
 
     for(int i = 0; i < n; i++) {
         float row_sum = 0.0;
@@ -71,18 +130,31 @@ int main(int argc, char *argv[]) {
         b[i] = (float)rand() / RAND_MAX;
         x[i] = 0.0;
     }
-    
+
+    //Declaramos la variable que almacenará el número de ciclos
+    double ck = 0;
+
     start_counter();
-    originalJacobi(a, b, x, tol, max_iter);
+    originalJacobi(a, b, x, TOL, MAX_ITER);
     ck = get_counter();
 
     printf("Ciclos: %.0f\n", ck);
-    printf("Iteraciones: %d\n", iter);
-    printf("Norma: %f\n", sqrt(norm2));
+    if(iter == MAX_ITER) {
+        printf("No se ha alcanzado la convergencia en %d iteraciones.\n", MAX_ITER);
+    } else {
+        printf("Convergencia alcanzada en %d iteraciones.\n", iter);
+    }
+    printf("norma2: %.6f\n", sqrt(norm2));
 
+    //Ahora liberamos la memoria reservada
+    for (int i = 0; i < n; i++) {
+        free(a[i]);
+    }
     free(a);
     free(b);
     free(x);
+    free(x_new);
 
-    return 0;   
+    return EXIT_SUCCESS;
 }
+
