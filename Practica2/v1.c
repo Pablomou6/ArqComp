@@ -88,31 +88,47 @@ int main(int argc, char* argv[]) {
     n = atoi(argv[1]);
 
     //Reservamos memoria para la matriz
-    a = (float**)malloc(n * sizeof(float*));
+    a = (float**)aligned_alloc(64, n * sizeof(float*));
     if(a == NULL) {
         printf("Error: no se ha podido reservar memoria para la matriz de coeficientes.\n");
         return EXIT_FAILURE;
     }
     //Se reserva memoria para cada fila de la matriz
     for(int i = 0; i < n; i++) {
-        a[i] = (float*)malloc(n * sizeof(float));
+        a[i] = (float*)aligned_alloc(64, n * sizeof(float));
         if(a[i] == NULL) {
             printf("Error: no se ha podido reservar memoria para la fila %d de la matriz de coeficientes.\n", i);
+            //Liberamos la memoria reservada hasta el momento
+            for(int j = 0; j < i; j++) {
+                free(a[j]);
+            }
+            free(a);
             return EXIT_FAILURE;
         }
     }
 
     //Se reserva memoria para el vector de términos independientes
-    b = (float*)malloc(n * sizeof(float));
+    b = (float*)aligned_alloc(64, n * sizeof(float));
     if(b == NULL) {
         printf("Error: no se ha podido reservar memoria para el vector de términos independientes.\n");
+        //Liberamos la memoria reservada para la matriz
+        for(int i = 0; i < n; i++) {
+            free(a[i]);
+        }
+        free(a);
         return EXIT_FAILURE;
     }
 
     //Se reserva memoria para el vector solución
-    x = (float*)malloc(n * sizeof(float));
+    x = (float*)aligned_alloc(64, n * sizeof(float));
     if(x == NULL) {
         printf("Error: no se ha podido reservar memoria para el vector solución.\n");
+        //Liberamos la memoria reservada para la matriz y el vector de términos independientes
+        for(int i = 0; i < n; i++) {
+            free(a[i]);
+        }
+        free(a);
+        free(b);
         return EXIT_FAILURE;
     }
 
