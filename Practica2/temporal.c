@@ -30,82 +30,60 @@ int n = 0;
 //Función que implementa el método de Jacobi
 //! Función de v1, sin optimizar. Probar diferentes cousas.
 void v2Jacobi(float** a, float* b, float* x, float tol, int max_iter) {
-    //Declaramos las variables necesarias
-    double ck = 0.0;
     float* x_new = (float*)aligned_alloc(64, n * sizeof(float));
     int iter = 0;
-    float norm2 = 0.0, sigma = 0.0;
+    float norm2 = 0.0;
 
-    //Implementamos el pseudocódigo del método de Jacobi e iniciamos el contador
     start_counter();
-    for(iter = 0; iter < max_iter; iter++) {
+    for (iter = 0; iter < max_iter; iter++) {
         norm2 = 0.0;
 
-        //Iteramos sobre cada fila de la matriz
-        for(int i = 0; i < n; i++) {
-            sigma = 0.0;
+        // Iteramos sobre bloques de filas
+        for (int bi = 0; bi < n; bi += BLOCK_SIZE) {
+            int bi_end = (bi + BLOCK_SIZE > n) ? n : bi + BLOCK_SIZE;
 
-            //! Calculamos la suma de los productos de los elementos de la fila i con los elementos del vector solución
-            // Suma de los elementos antes de la diagonal (desenrollado de 10 en 10)
-            /*
-                Máis rentable de 10 en 10 para os tamaños que temos que usar (250, 2500 e 5000). Sin embargo, debemos manter os bucles para os restantes
-                pq debe valer para todo n. Con 10, os multiplos de n nn ejecutan esos bucles.
-            */
-            int j;
-            for (j = 0; j <= i - 10; j += 10) {
-                sigma += a[i][j] * x[j];
-                sigma += a[i][j + 1] * x[j + 1];
-                sigma += a[i][j + 2] * x[j + 2];
-                sigma += a[i][j + 3] * x[j + 3];
-                sigma += a[i][j + 4] * x[j + 4];
-                sigma += a[i][j + 5] * x[j + 5];
-                sigma += a[i][j + 6] * x[j + 6];
-                sigma += a[i][j + 7] * x[j + 7];
-                sigma += a[i][j + 8] * x[j + 8];
-                sigma += a[i][j + 9] * x[j + 9];
-            }
-            // Procesar los elementos restantes
-            for (; j < i; j++) {
-                sigma += a[i][j] * x[j];
-            }
+            // Iteramos sobre cada fila dentro del bloque
+            for (int i = bi; i < bi_end; i++) {
+                float sigma = 0.0;
 
-            // Suma de los elementos después de la diagonal (desenrollado de 10 en 10)
-            for (j = i + 1; j <= n - 10; j += 10) {
-                sigma += a[i][j] * x[j];
-                sigma += a[i][j + 1] * x[j + 1];
-                sigma += a[i][j + 2] * x[j + 2];
-                sigma += a[i][j + 3] * x[j + 3];
-                sigma += a[i][j + 4] * x[j + 4];
-                sigma += a[i][j + 5] * x[j + 5];
-                sigma += a[i][j + 6] * x[j + 6];
-                sigma += a[i][j + 7] * x[j + 7];
-                sigma += a[i][j + 8] * x[j + 8];
-                sigma += a[i][j + 9] * x[j + 9];
-            }
-            // Procesar los elementos restantes
-            for (; j < n; j++) {
-                sigma += a[i][j] * x[j];
-            }
+                // Suma de los elementos antes de la diagonal (bloques de columnas)
+                for (int bj = 0; bj < i; bj += BLOCK_SIZE) {
+                    int bj_end = (bj + BLOCK_SIZE > i) ? i : bj + BLOCK_SIZE;
 
-            //Calculamos el nuevo valor del elemento i del vector solución
-            x_new[i] = (b[i] - sigma) / a[i][i];
+                    for (int j = bj; j < bj_end; j++) {
+                        sigma += a[i][j] * x[j];
+                    }
+                }
 
-            //! Calculamos la norma del vector solución
-            float diff = x_new[i] - x[i];
-            norm2 += diff * diff;
+                // Suma de los elementos después de la diagonal (bloques de columnas)
+                for (int bj = i + 1; bj < n; bj += BLOCK_SIZE) {
+                    int bj_end = (bj + BLOCK_SIZE > n) ? n : bj + BLOCK_SIZE;
+
+                    for (int j = bj; j < bj_end; j++) {
+                        sigma += a[i][j] * x[j];
+                    }
+                }
+
+                // Calculamos el nuevo valor del elemento i del vector solución
+                x_new[i] = (b[i] - sigma) / a[i][i];
+
+                // Calculamos la norma del vector solución
+                float diff = x_new[i] - x[i];
+                norm2 += diff * diff;
+            }
         }
 
-        //! Actualizamos el vector solución con los nuevos valores
+        // Actualizamos el vector solución con los nuevos valores
         float* temp = x;
         x = x_new;
         x_new = temp;
 
-        //Comprobamos si la norma es menor que la tolerancia
-        if(sqrtf(norm2) < tol) {
+        // Comprobamos si la norma es menor que la tolerancia
+        if (sqrtf(norm2) < tol) {
             break;
         }
     }
-    ck = get_counter();
+    double ck = get_counter();
 
     printf("Ciclos: %.2lf\n", ck);
     printf("Iteraciones: %d\n", iter);
