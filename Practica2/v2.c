@@ -45,7 +45,7 @@ void v2Jacobi(float** a, float* b, float* x, float tol, int max_iter) {
         for(int i = 0; i < n; i++) {
             sigma = 0.0;
 
-            //! Calculamos la suma de los productos de los elementos de la fila i con los elementos del vector solución
+            //!! Calculamos la suma de los productos de los elementos de la fila i con los elementos del vector solución y DESENROLLAMOS
             // Suma de los elementos antes de la diagonal (desenrollado de 10 en 10)
             /*
                 Máis rentable de 10 en 10 para os tamaños que temos que usar (250, 2500 e 5000). Sin embargo, debemos manter os bucles para os restantes
@@ -86,6 +86,34 @@ void v2Jacobi(float** a, float* b, float* x, float tol, int max_iter) {
             for (; j < n; j++) {
                 sigma += a[i][j] * x[j];
             }
+
+            /*  BLOQUES (Produce más ciclos)
+                /Iteramos sobre bloques de filas
+                for (int bi = 0; bi < n; bi += BLOCK_SIZE) {
+                int bi_end = (bi + BLOCK_SIZE > n) ? n : bi + BLOCK_SIZE;
+
+                /Iteramos sobre cada fila dentro del bloque
+                for (int i = bi; i < bi_end; i++) {
+                    float sigma = 0.0;
+
+                    /Suma de los elementos antes de la diagonal (bloques de columnas)
+                    for (int bj = 0; bj < i; bj += BLOCK_SIZE) {
+                        int bj_end = (bj + BLOCK_SIZE > i) ? i : bj + BLOCK_SIZE;
+
+                        for (int j = bj; j < bj_end; j++) {
+                            sigma += a[i][j] * x[j];
+                        }
+                    }
+
+                    /Suma de los elementos después de la diagonal (bloques de columnas)
+                    for (int bj = i + 1; bj < n; bj += BLOCK_SIZE) {
+                        int bj_end = (bj + BLOCK_SIZE > n) ? n : bj + BLOCK_SIZE;
+
+                        for (int j = bj; j < bj_end; j++) {
+                            sigma += a[i][j] * x[j];
+                        }
+                    }
+            */
 
             //Calculamos el nuevo valor del elemento i del vector solución
             x_new[i] = (b[i] - sigma) / a[i][i];
