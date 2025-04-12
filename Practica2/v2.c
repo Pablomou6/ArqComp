@@ -45,11 +45,30 @@ void v2Jacobi(float** a, float* b, float* x, float tol, int max_iter) {
         for(int i = 0; i < n; i++) {
             sigma = 0.0;
 
-            //Calculamos la suma de los productos de los elementos de la fila i con los elementos del vector solución
-            for(int j = 0; j < n; j++) {
-                if(i != j) {
-                    sigma += a[i][j] * x[j];
-                }
+            //! Calculamos la suma de los productos de los elementos de la fila i con los elementos del vector solución
+            // Suma de los elementos antes de la diagonal (desenrollado de 4 en 4)
+            int j;
+            for (j = 0; j <= i - 4; j += 4) {
+                sigma += a[i][j] * x[j];
+                sigma += a[i][j + 1] * x[j + 1];
+                sigma += a[i][j + 2] * x[j + 2];
+                sigma += a[i][j + 3] * x[j + 3];
+            }
+            // Procesar los elementos restantes
+            for (; j < i; j++) {
+                sigma += a[i][j] * x[j];
+            }
+
+            // Suma de los elementos después de la diagonal (desenrollado de 4 en 4)
+            for (j = i + 1; j <= n - 4; j += 4) {
+                sigma += a[i][j] * x[j];
+                sigma += a[i][j + 1] * x[j + 1];
+                sigma += a[i][j + 2] * x[j + 2];
+                sigma += a[i][j + 3] * x[j + 3];
+            }
+            // Procesar los elementos restantes
+            for (; j < n; j++) {
+                sigma += a[i][j] * x[j];
             }
 
             //Calculamos el nuevo valor del elemento i del vector solución
