@@ -1,18 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <time.h>
 #include "counter.h"
-
-int n = 0;
 
 /*
     Cambios respecto v1:
     - Se calcula el inverso de la diagonal (a[i][i]) al principio de cada iteración. Evitando una operación compleja.
     - Se calcula sigma en un bucle desenrollado, teniendo en cuenta que la diagonal no se tiene que sumar. Reduce iteraciones y es más eficiente.
     - Se calcula la normal en el mismo bucle que se copia x_new a x; mejorando la localidad de la caché.
-    - Almacenamos la difrencia en una variable. De esta forma, la calculamos 1 vez y accedemos a ella 2 veces, en vez de calcularla 2 veces. 
-    - Cambiamos la forma en que se almacenan las variables. Usamos memoria dinámica de forma que se alineen a la caché. 
+    - Almacenamos la difrencia en una variable. De esta forma, la calculamos 1 vez y accedemos a ella 2 veces, en vez de calcularla 2 veces.  
     - La matriz se almacena en un vector plano (tamaño n*n), de forma que es más eficiente acceder a ella. Además, este cambio nos permite un 
     acceso secuencial a la memoria, mejorando la localidad de la caché.
     NOTA: Dado que la matriz la almacenamos como un vector plano, las filas se almacenan de forma contigua. Para acceder a [i][j] se accede a a[i*n+j].
@@ -23,160 +19,160 @@ int n = 0;
      
 */
 
+//Declaramos constantes que usaremos
+#define TOL 1e-8
+#define MAX_ITER 20000
+#define BLOCK_SIZE 64
 
-float norm2 = 0;
-int iter = 0;
+//Definimos como variable global el tamaño de la matriz
+int n = 0;
 
-void v2Jacobi(float* a, float* b, float* x, float tol, int max_iter) {
-    float *x_new = (float*)malloc(n*sizeof(float));
-    iter = 0;
-
-    int i = 0;
-    int j = 0;
-
-    for(iter = 0; iter < max_iter; iter++) {
-        norm2 = 0;
-
-        //Iteraciones sobre las filas. El acceso será secuencial, según lo explicado anteriormente
-        for(i = 0; i < n; i++) {
-            float sigma = 0.0;
-            //Precalculamos el inverso de la diagonal
-            float aInv = 1.0 / a[i * n + i];
-            
-              
-            for(j = 0; j <= n - 4; j += 4) {
-                if(i != j) {
-                    sigma += a[i * n + j] * x[j];
-                }
-                if(i != j + 1) {
-                    sigma += a[i * n + j + 1] * x[j + 1];
-                }
-                if(i != j + 2) {
-                    sigma += a[i * n + j + 2] * x[j + 2];
-                }
-                if(i != j + 3) {
-                    sigma += a[i * n + j + 3] * x[j + 3];
-                }
-            }
-
-            //Ahora, vamos a procesar los últimos elementos
-            for(; j < n; j++) {
-                if(i != j) {
-                    sigma += a[i * n + j] * x[j];
-                }
-            }
-            x_new[i] = (b[i] - sigma) * aInv;
-        }
-        
-        //SE FUSIONA en un bucle la copia de x_new a x con el cálculo de la norma
-        for(int i = 0; i < n; i++) {
-            //No calculo 2 veces la diferencia. En cambio, la guardo en una variable y accedo a ella dos veces.
-            float diff = (x_new[i] - x[i]);
-            norm2 += diff * diff;
-
-            x[i] = x_new[i];
-        }
-
-        if(sqrt(norm2) < tol) {
-            break;
-        }
-
-    }
-
-    free(x_new);    
-}
-
-/*
-void v2Jacobi(float* a, float* b, float* x, float tol, int max_iter) {
-    float *x_new = (float*)malloc(n * sizeof(float));
-
-    Lo ajustamos según el tamaño de la caché L1 (49 152 bytes). Queremos que un bloque quepa entero en L1, por lo que, de igual forma que reservamos 
-    memoria para la matriz, un bloque ocupará ? * ? * sizeof(float) bytes. Entonces, eso debe ser <= que L1:
-    block_size² <= 49 152/sizeof(float); B² <= 12 288; B <= 111; B = 64/
-    int block_size = 64;  
-
+//Función que implementa el método de Jacobi
+//! Función de v1, sin optimizar. Probar diferentes cousas.
+void v2Jacobi(float** a, float* b, float* x, float tol, int max_iter) {
+    //Declaramos las variables necesarias
+    double ck = 0.0;
+    float* x_new = (float*)aligned_alloc(64, n * sizeof(float));
     int iter = 0;
+    float norm2 = 0.0, sigma = 0.0;
+
+    //Implementamos el pseudocódigo del método de Jacobi e iniciamos el contador
+    start_counter();
     for(iter = 0; iter < max_iter; iter++) {
-        float norm2 = 0.0f;
+        norm2 = 0.0;
 
+        //Iteramos sobre cada fila de la matriz
         for(int i = 0; i < n; i++) {
-            float sigma = 0.0f;
-            float aInv = 1.0f / a[i * n + i];
+            sigma = 0.0;
 
-            for(int jj = 0; jj < n; jj += block_size) {
-                int j_end = (jj + block_size > n) ? n : jj + block_size;
-
-                for(int j = jj; j < j_end; j += 4) {
-                    if(j < n && i != j)
-                        sigma += a[i * n + j] * x[j];
-                    if(j + 1 < n && i != j + 1)
-                        sigma += a[i * n + j + 1] * x[j + 1];
-                    if(j + 2 < n && i != j + 2)
-                        sigma += a[i * n + j + 2] * x[j + 2];
-                    if(j + 3 < n && i != j + 3)
-                        sigma += a[i * n + j + 3] * x[j + 3];
+            //Calculamos la suma de los productos de los elementos de la fila i con los elementos del vector solución
+            for(int j = 0; j < n; j++) {
+                if(i != j) {
+                    sigma += a[i][j] * x[j];
                 }
             }
 
-            x_new[i] = (b[i] - sigma) * aInv;
-        }
+            //Calculamos el nuevo valor del elemento i del vector solución
+            x_new[i] = (b[i] - sigma) / a[i][i];
 
-        for(int i = 0; i < n; i++) {
+            //! Calculamos la norma del vector solución
             float diff = x_new[i] - x[i];
             norm2 += diff * diff;
-            x[i] = x_new[i];
         }
 
-        if(sqrtf(norm2) < tol)
+        //! Actualizamos el vector solución con los nuevos valores
+        float* temp = x;
+        x = x_new;
+        x_new = temp;
+
+        //Comprobamos si la norma es menor que la tolerancia
+        if(sqrtf(norm2) < tol) {
             break;
+        }
     }
+    ck = get_counter();
+
+    printf("Ciclos: %.2lf\n", ck);
+    printf("Iteraciones: %d\n", iter);
+    printf("Norma: %f\n", sqrtf(norm2));
 
     free(x_new);
-    printf("Iteraciones: %d\n", iter);
 }
-*/
 
-int main(int argc, char *argv[]) {
-    srand(time(NULL));
+int main(int argc, char* argv[]) {
+    //Declaramos las variables que usaremos
+    float** a = NULL;
+    float* b = NULL;
+    float* x = NULL;
 
-    //Comprobamos el número de argumentos
+    //Comprobamos que se ha introducido el tamaño de la matriz
     if(argc != 2) {
-        printf("Error de entrada, se debe introducir el valor de n como argumento.\n");
+        printf("Error: se debe introducir el tamaño de la matriz como argumento.\n");
+        printf("Uso: %s <tamaño de la matriz>\n", argv[0]);
         return EXIT_FAILURE;
     }
+
+    //Recuperamos el tamaño de la matriz
     n = atoi(argv[1]);
 
-    double ck = 0;
-    //Se usa conjuntamente en el bucle a con x
-    float* a = (float*)aligned_alloc(64, n*n*sizeof(float));
-    float* x = (float*)aligned_alloc(64, n*sizeof(float));
+    //Reservamos memoria para la matriz (la almacenamos en un vector plano)
+    a = (float**)aligned_alloc(64, n * sizeof(float*));
+    if(a == NULL) {
+        printf("Error: no se ha podido reservar memoria para la matriz de coeficientes.\n");
+        return EXIT_FAILURE;
+    }
+    //Se reserva memoria para cada fila de la matriz
+    for(int i = 0; i < n; i++) {
+        a[i] = (float*)aligned_alloc(64, n * sizeof(float));
+        if(a[i] == NULL) {
+            printf("Error: no se ha podido reservar memoria para la fila %d de la matriz de coeficientes.\n", i);
+            //Liberamos la memoria reservada hasta el momento
+            for(int j = 0; j < i; j++) {
+                free(a[j]);
+            }
+            free(a);
+            return EXIT_FAILURE;
+        }
+    }
 
-    float* b = (float*)aligned_alloc(64, n*sizeof(float));
-    float tol = 1e-8;
-    int max_iter = 20000;
+    //Se reserva memoria para el vector de términos independientes
+    b = (float*)aligned_alloc(64, n * sizeof(float));
+    if(b == NULL) {
+        printf("Error: no se ha podido reservar memoria para el vector de términos independientes.\n");
+        //Liberamos la memoria reservada para la matriz
+        for(int i = 0; i < n; i++) {
+            free(a[i]);
+        }
+        free(a);
+        return EXIT_FAILURE;
+    }
 
+    //Se reserva memoria para el vector solución
+    x = (float*)aligned_alloc(64, n * sizeof(float));
+    if(x == NULL) {
+        printf("Error: no se ha podido reservar memoria para el vector solución.\n");
+        //Liberamos la memoria reservada para el vector de términos independientes
+        for(int i = 0; i < n; i++) {
+            free(a[i]);
+        }
+        free(a);
+        free(b);
+        return EXIT_FAILURE;
+    }
+
+    //Inicializamos la semilla para la generación de números aleatorios
+    srand(n);
+
+    //Inicializamos la matriz
     for(int i = 0; i < n; i++) {
         float row_sum = 0.0;
         for(int j = 0; j < n; j++) {
-            a[i * n + j] = (float)rand() / RAND_MAX;
-            row_sum += a[i * n + j];
+            a[i][j] = (float)rand() / RAND_MAX;
+            row_sum += a[i][j];
         }
-        a[i * n + i] += row_sum;
+        a[i][i] += row_sum;
+    }
+
+    //Inicializamos el vector de términos independientes
+    for(int i = 0; i < n; i++) {
         b[i] = (float)rand() / RAND_MAX;
+    }
+
+    //Inicializamos el vector solución
+    for(int i = 0; i < n; i++) {
         x[i] = 0.0;
     }
-    
-    start_counter();
-    v2Jacobi(a, b, x, tol, max_iter);
-    ck = get_counter();
 
-    printf("Ciclos: %.0f\n", ck);
-    printf("Iteraciones: %d\n", iter);
-    printf("Norma: %f\n", sqrt(norm2));
+    //Llamamos a la función que implementa el método de Jacobi
+    v2Jacobi(a, b, x, TOL, MAX_ITER);
 
+    //Liberamos la memoria reservada para la matriz y los vectores
+    for(int i = 0; i < n; i++) {
+        free(a[i]);
+    }
     free(a);
     free(b);
     free(x);
 
-    return 0;   
+    return EXIT_SUCCESS;
 }
