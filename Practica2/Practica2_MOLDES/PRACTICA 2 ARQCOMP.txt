@@ -1,0 +1,42 @@
+PRACTICA 2 ARQCOMP
+
+Ejemplo del Método de Jacobi:
+
+3x-y-z=1                    (3 -1 -1) (x)    (1)
+-x+3y+z=3   ------------>   (-1 3  1) (y)  = (3)        Ax=b  --> Importante esto 
+2x+y+4z=7                   (2  1  4) (z)    (7)
+                            |-------|       |---|
+                                A             b
+
+A=D-L-U
+D=Matriz diagonal de A y el resto con ceros
+L=Matriz triangular inferior de A y el resto con ceros(como hay un menos delante, le cambiamos el signo para que se convierta luego en A)
+U=Matriz triangular superior de A y el resto con ceros(le cambiamos el signo por lo mismo que pasa con L)
+   (3  0  0)
+D= (0  3  0)
+   (0  0  4)
+  
+   (0  0  0)
+L= (1  0  0)
+   (-2 -1 0)
+   
+   (0  1  1)
+U= (0  0 -1)
+   (0  0  0)
+   
+Tiene sentido ahora que A sea D-L-U
+
+Fórmula para la iteración del método de Jacobi:
+
+x^k+1 = D^-1 * b + D^-1(L+U)*x^b
+
+Haciendo esto, al final quedará algo de este estilo:
+
+x_k+1 = 1/3 + 1/3*y_k + 1/3*z_k
+y_k+1 = 1 + 1/3*x_k - 1/3*z_k
+z_k+1 = 7/4 - 1/2*x_k - 1/4*y_k
+
+así conseguiremos un método iteractivo que ejecutará esta expresión
+hasta que converja a la solución de la ecuación
+
+
