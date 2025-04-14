@@ -3,6 +3,7 @@
 #include <math.h>
 #include "counter.h"
 #include <immintrin.h>
+#include <stdint.h>
 
 //Declaramos constantes que usaremos
 #define TOL 1e-8
@@ -16,10 +17,33 @@ int n = 0;
 void v3Jacobi(float** a, float* b, float* x, float tol, int max_iter) {
     double ck = 0.0;
     float* x_new = (float*)_mm_malloc(n * sizeof(float), ALIGNMENT);
+    if (((uintptr_t)x_new % ALIGNMENT) != 0) {
+        printf("Vector b NO alineado: %p\n", (void*)b);
+    } 
     int iter = 0;
     float norm2 = 0.0;
 
     start_counter();
+
+    float* aII = (float*)_mm_malloc(n * sizeof(float), ALIGNMENT);
+    if (((uintptr_t)aII % ALIGNMENT) != 0) {
+        printf("Vector aII NO alineado: %p\n", (void*)b);
+    }
+
+    float* temp1 = (float*)_mm_malloc(8 * sizeof(float), ALIGNMENT);
+    if (((uintptr_t)temp1 % ALIGNMENT) != 0) {
+        printf("Vector temp1 NO alineado: %p\n", (void*)b);
+    }
+
+    float* temp2 = (float*)_mm_malloc(8 * sizeof(float), ALIGNMENT);
+    if (((uintptr_t)temp2 % ALIGNMENT) != 0) {
+        printf("Vector temp2 NO alineado: %p\n", (void*)b);
+    }
+
+    for (int i = 0; i < n; i++) {
+        aII[i] = a[i][i];
+        a[i][i] = 0.0f;
+    }
 
     for (iter = 0; iter < max_iter; iter++) {
         norm2 = 0.0;
@@ -30,34 +54,35 @@ void v3Jacobi(float** a, float* b, float* x, float tol, int max_iter) {
             int j;
             for (j = 0; j <= n - 8; j += 8) {
                 // Cargamos 8 elementos de la fila i
-                __m256 va1 = _mm256_loadu_ps(&a[i][j]);
-                __m256 vx = _mm256_loadu_ps(&x[j]);
+                __m256 va1 = _mm256_load_ps(&a[i][j]);
+                __m256 vx = _mm256_load_ps(&x[j]);
 
                 // Cargamos 8 elementos de la fila i+1 (si existe)
-                __m256 va2 = (i + 1 < n) ? _mm256_loadu_ps(&a[i + 1][j]) : _mm256_setzero_ps();
+                __m256 va2 = (i + 1 < n) ? _mm256_load_ps(&a[i + 1][j]) : _mm256_setzero_ps();
 
-                // Convertimos a arreglos para manejar la máscara
-                float a_vals1[8], a_vals2[8], x_vals[8];
-                _mm256_storeu_ps(a_vals1, va1);
-                _mm256_storeu_ps(a_vals2, va2);
-                _mm256_storeu_ps(x_vals, vx);
+                // Realizamos las multiplicaciones y acumulamos
+                __m256 mul1 = _mm256_mul_ps(va1, vx);
+                __m256 mul2 = _mm256_mul_ps(va2, vx);
+
+                _mm256_store_ps(temp1, mul1);
+                _mm256_store_ps(temp2, mul2);
 
                 for (int k = 0; k < 8; k++) {
-                    if (j + k != i) sigma1 += a_vals1[k] * x_vals[k];
-                    if (i + 1 < n && j + k != i + 1) sigma2 += a_vals2[k] * x_vals[k];
+                    sigma1 += temp1[k];
+                    if (i + 1 < n) sigma2 += temp2[k];
                 }
             }
 
             // Procesamos los elementos restantes
             for (; j < n; j++) {
-                if (j != i) sigma1 += a[i][j] * x[j];
-                if (i + 1 < n && j != i + 1) sigma2 += a[i + 1][j] * x[j];
+                sigma1 += a[i][j] * x[j];
+                if (i + 1 < n) sigma2 += a[i + 1][j] * x[j];
             }
 
-            // Calculamos los nuevos valores de x[i] y x[i+1]
-            x_new[i] = (b[i] - sigma1) / a[i][i];
+            // Calculamos los nuevos valores de x[i] y x[i+1] usando la diagonal original
+            x_new[i] = (b[i] - sigma1) / aII[i];
             if (i + 1 < n) {
-                x_new[i + 1] = (b[i + 1] - sigma2) / a[i + 1][i + 1];
+                x_new[i + 1] = (b[i + 1] - sigma2) / aII[i + 1];
             }
 
             // Calculamos las diferencias para la norma
@@ -71,7 +96,7 @@ void v3Jacobi(float** a, float* b, float* x, float tol, int max_iter) {
         }
 
         // Actualizamos el vector x
-        float *temp = x;
+        float* temp = x;
         x = x_new;
         x_new = temp;
 
@@ -85,6 +110,9 @@ void v3Jacobi(float** a, float* b, float* x, float tol, int max_iter) {
     printf("Norma: %f\n", sqrtf(norm2));
 
     _mm_free(x_new);
+    _mm_free(aII);
+    _mm_free(temp1);
+    _mm_free(temp2);
 }
 
 int main(int argc, char* argv[]) {
@@ -122,6 +150,12 @@ int main(int argc, char* argv[]) {
             return EXIT_FAILURE;
         }
     }
+    for (int i = 0; i < n; i++) {
+        if (((uintptr_t)a[i] % ALIGNMENT) != 0) {
+            printf("Fila %d NO alineada: %p\n", i, (void*)a[i]);
+        }
+    }
+    
 
     //Se reserva memoria para el vector de términos independientes
     b = (float*)_mm_malloc(n * sizeof(float), ALIGNMENT);
@@ -134,6 +168,10 @@ int main(int argc, char* argv[]) {
         _mm_free(a);
         return EXIT_FAILURE;
     }
+    if (((uintptr_t)b % ALIGNMENT) != 0) {
+        printf("Vector b NO alineado: %p\n", (void*)b);
+    } 
+
 
     //Se reserva memoria para el vector solución
     x = (float*)_mm_malloc(n * sizeof(float), ALIGNMENT);
@@ -147,6 +185,9 @@ int main(int argc, char* argv[]) {
         _mm_free(b);
         return EXIT_FAILURE;
     }
+    if (((uintptr_t)x % ALIGNMENT) != 0) {
+        printf("Vector b NO alineado: %p\n", (void*)b);
+    } 
 
     //Inicializamos la semilla para la generación de números aleatorios
     srand(n);
