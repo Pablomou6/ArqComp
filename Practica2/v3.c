@@ -7,7 +7,7 @@
 //Declaramos constantes que usaremos
 #define TOL 1e-8
 #define MAX_ITER 20000
-#define ALIGNMENT 32
+#define ALIGNMENT 64
 
 //Definimos como variable global el tamaño de la matriz
 int n = 0;
@@ -15,7 +15,7 @@ int n = 0;
 //Función que implementa el método de Jacobi
 void v3Jacobi(float** a, float* b, float* x, float tol, int max_iter) {
     double ck = 0.0;
-    float* x_new = (float*)aligned_alloc(ALIGNMENT, n * sizeof(float));
+    float* x_new = (float*)_mm_malloc(n * sizeof(float), ALIGNMENT);
     int iter = 0;
     float norm2 = 0.0;
 
@@ -71,9 +71,9 @@ void v3Jacobi(float** a, float* b, float* x, float tol, int max_iter) {
         }
 
         // Actualizamos el vector x
-        float *temp=x;
-        x=x_new;
-        x_new=temp;
+        float *temp = x;
+        x = x_new;
+        x_new = temp;
 
         // Verificamos la convergencia
         if (sqrtf(norm2) < tol) break;
@@ -84,7 +84,7 @@ void v3Jacobi(float** a, float* b, float* x, float tol, int max_iter) {
     printf("Iteraciones: %d\n", iter);
     printf("Norma: %f\n", sqrtf(norm2));
 
-    free(x_new);
+    _mm_free(x_new);
 }
 
 int main(int argc, char* argv[]) {
@@ -104,47 +104,47 @@ int main(int argc, char* argv[]) {
     n = atoi(argv[1]);
 
     //Reservamos memoria para la matriz (la almacenamos en un vector plano)
-    a = (float**)aligned_alloc(ALIGNMENT, n * sizeof(float*));
+    a = (float**)_mm_malloc(n * sizeof(float*), ALIGNMENT);
     if(a == NULL) {
         printf("Error: no se ha podido reservar memoria para la matriz de coeficientes.\n");
         return EXIT_FAILURE;
     }
     //Se reserva memoria para cada fila de la matriz
     for(int i = 0; i < n; i++) {
-        a[i] = (float*)aligned_alloc(ALIGNMENT, n * sizeof(float));
+        a[i] = (float*)_mm_malloc(n * sizeof(float), ALIGNMENT);
         if(a[i] == NULL) {
             printf("Error: no se ha podido reservar memoria para la fila %d de la matriz de coeficientes.\n", i);
             //Liberamos la memoria reservada hasta el momento
             for(int j = 0; j < i; j++) {
-                free(a[j]);
+                _mm_free(a[j]);
             }
-            free(a);
+            _mm_free(a);
             return EXIT_FAILURE;
         }
     }
 
     //Se reserva memoria para el vector de términos independientes
-    b = (float*)aligned_alloc(ALIGNMENT, n * sizeof(float));
+    b = (float*)_mm_malloc(n * sizeof(float), ALIGNMENT);
     if(b == NULL) {
         printf("Error: no se ha podido reservar memoria para el vector de términos independientes.\n");
         //Liberamos la memoria reservada para la matriz
         for(int i = 0; i < n; i++) {
-            free(a[i]);
+            _mm_free(a[i]);
         }
-        free(a);
+        _mm_free(a);
         return EXIT_FAILURE;
     }
 
     //Se reserva memoria para el vector solución
-    x = (float*)aligned_alloc(ALIGNMENT, n * sizeof(float));
+    x = (float*)_mm_malloc(n * sizeof(float), ALIGNMENT);
     if(x == NULL) {
         printf("Error: no se ha podido reservar memoria para el vector solución.\n");
         //Liberamos la memoria reservada para el vector de términos independientes
         for(int i = 0; i < n; i++) {
-            free(a[i]);
+            _mm_free(a[i]);
         }
-        free(a);
-        free(b);
+        _mm_free(a);
+        _mm_free(b);
         return EXIT_FAILURE;
     }
 
@@ -178,9 +178,9 @@ int main(int argc, char* argv[]) {
     for(int i = 0; i < n; i++) {
         free(a[i]);
     }
-    free(a);
-    free(b);
-    free(x);
+    _mm_free(a);
+    _mm_free(b);
+    _mm_free(x);
 
     return EXIT_SUCCESS;
 }
