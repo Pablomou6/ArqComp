@@ -1,176 +1,104 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <time.h>
 #include <math.h>
 #include "counter.h"
 
-/*
-    Cambios respecto v1:
-    - Se calcula el inverso de la diagonal (a[i][i]) al principio de cada iteración. Evitando una operación compleja.
-    - Se calcula sigma en un bucle desenrollado, teniendo en cuenta que la diagonal no se tiene que sumar. Reduce iteraciones y es más eficiente.
-    - Se calcula la normal en el mismo bucle que se copia x_new a x; mejorando la localidad de la caché.
-    - Almacenamos la difrencia en una variable. De esta forma, la calculamos 1 vez y accedemos a ella 2 veces, en vez de calcularla 2 veces.  
-    - La matriz se almacena en un vector plano (tamaño n*n), de forma que es más eficiente acceder a ella. Además, este cambio nos permite un 
-    acceso secuencial a la memoria, mejorando la localidad de la caché.
-    NOTA: Dado que la matriz la almacenamos como un vector plano, las filas se almacenan de forma contigua. Para acceder a [i][j] se accede a a[i*n+j].
-    Por ejemplo, par acceder a la posición real [5][5] para n = 7, se accede realmente a [4][4] en la matriz almacenada. Por lo que, el elemento 
-    será el que está tras 4 filas enteras (desde 0 a 3) (4 filas de 7 elementos, i * n) y 4 elementos (4 elementos de la quinta fila, + j). 
-    Por lo que se accede a a[4*7+4] = a[32]. Además, como hemos mencionado, nos permite un acceso secuencia a la memoria, ya que dada una fila, por 
-    ejemplo i = 1, se accede a n + j, siendo j = {0,1,2,3,...,n-1}
-     
-*/
+#define ALIGNMENT 64
 
-//Declaramos constantes que usaremos
-#define TOL 1e-8
-#define MAX_ITER 20000
-#define BLOCK_SIZE 64
+int n=0;
 
-//Definimos como variable global el tamaño de la matriz
-int n = 0;
+void Jacobi(float **a, float *b, float *x, float tol, int max_iter){
+    /*
+        Variables auxiliares:
+        x_new: Vector nueva solución (float[n])
+     */
+        double ck=0.0;
+        int iter;
+        float *x_new=(float *)aligned_alloc(ALIGNMENT,n*sizeof(float));
+        float norm2=0.0;
+        //!iniciamos el contador de ciclos
+        start_counter();
+        for(iter=0;iter<max_iter;iter++){
+            norm2=0.0; //!norma del vector al cuadrado (float) 
+            for (int i = 0; i < n; i += 2) {
 
-//Función que implementa el método de Jacobi
-//! Función de v1, sin optimizar. Probar diferentes cousas.
-void v2Jacobi(float** a, float* b, float* x, float tol, int max_iter) {
-    //Declaramos las variables necesarias
-    double ck = 0.0;
-    float* x_new = (float*)aligned_alloc(64, n * sizeof(float));
-    int iter = 0;
-    float norm2 = 0.0, sigma = 0.0;
-
-    //Implementamos el pseudocódigo del método de Jacobi e iniciamos el contador
-    start_counter();
-    for(iter = 0; iter < max_iter; iter++) {
-        norm2 = 0.0;
-
-        //Iteramos sobre cada fila de la matriz
-        for(int i = 0; i < n; i++) {
-            sigma = 0.0;
-
-            //!! Calculamos la suma de los productos de los elementos de la fila i con los elementos del vector solución y DESENROLLAMOS
-            // Suma de los elementos antes de la diagonal (desenrollado de 10 en 10)
-            /*
-                Máis rentable de 10 en 10 para os tamaños que temos que usar (250, 2500 e 5000). Sin embargo, debemos manter os bucles para os restantes
-                pq debe valer para todo n. Con 10, os multiplos de n nn ejecutan esos bucles.
-            */
-            int j;
-            for (j = 0; j <= i - 10; j += 10) {
-                sigma += a[i][j] * x[j];
-                sigma += a[i][j + 1] * x[j + 1];
-                sigma += a[i][j + 2] * x[j + 2];
-                sigma += a[i][j + 3] * x[j + 3];
-                sigma += a[i][j + 4] * x[j + 4];
-                sigma += a[i][j + 5] * x[j + 5];
-                sigma += a[i][j + 6] * x[j + 6];
-                sigma += a[i][j + 7] * x[j + 7];
-                sigma += a[i][j + 8] * x[j + 8];
-                sigma += a[i][j + 9] * x[j + 9];
-            }
-            // Procesar los elementos restantes
-            for (; j < i; j++) {
-                sigma += a[i][j] * x[j];
-            }
-
-            // Suma de los elementos después de la diagonal (desenrollado de 10 en 10)
-            for (j = i + 1; j <= n - 10; j += 10) {
-                sigma += a[i][j] * x[j];
-                sigma += a[i][j + 1] * x[j + 1];
-                sigma += a[i][j + 2] * x[j + 2];
-                sigma += a[i][j + 3] * x[j + 3];
-                sigma += a[i][j + 4] * x[j + 4];
-                sigma += a[i][j + 5] * x[j + 5];
-                sigma += a[i][j + 6] * x[j + 6];
-                sigma += a[i][j + 7] * x[j + 7];
-                sigma += a[i][j + 8] * x[j + 8];
-                sigma += a[i][j + 9] * x[j + 9];
-            }
-            // Procesar los elementos restantes
-            for (; j < n; j++) {
-                sigma += a[i][j] * x[j];
-            }
-
-            /*  BLOQUES (Produce más ciclos)
-                /Iteramos sobre bloques de filas
-                for (int bi = 0; bi < n; bi += BLOCK_SIZE) {
-                int bi_end = (bi + BLOCK_SIZE > n) ? n : bi + BLOCK_SIZE;
-
-                /Iteramos sobre cada fila dentro del bloque
-                for (int i = bi; i < bi_end; i++) {
-                    float sigma = 0.0;
-
-                    /Suma de los elementos antes de la diagonal (bloques de columnas)
-                    for (int bj = 0; bj < i; bj += BLOCK_SIZE) {
-                        int bj_end = (bj + BLOCK_SIZE > i) ? i : bj + BLOCK_SIZE;
-
-                        for (int j = bj; j < bj_end; j++) {
-                            sigma += a[i][j] * x[j];
-                        }
+                float sigma1 = 0.0, sigma2 = 0.0;
+    
+                // Fusión de bucles internos
+                for (int j = 0; j < n; j++) {
+                    if (i != j) {
+                        sigma1 += a[i][j] * x[j];
                     }
-
-                    /Suma de los elementos después de la diagonal (bloques de columnas)
-                    for (int bj = i + 1; bj < n; bj += BLOCK_SIZE) {
-                        int bj_end = (bj + BLOCK_SIZE > n) ? n : bj + BLOCK_SIZE;
-
-                        for (int j = bj; j < bj_end; j++) {
-                            sigma += a[i][j] * x[j];
-                        }
+                    if (i + 1 < n && i + 1 != j) {
+                        sigma2 += a[i + 1][j] * x[j];
                     }
-            */
-
-            //Calculamos el nuevo valor del elemento i del vector solución
-            x_new[i] = (b[i] - sigma) / a[i][i];
-
-            //! Calculamos la norma del vector solución
-            float diff = x_new[i] - x[i];
-            norm2 += diff * diff;
-        }
-
-        //! Actualizamos el vector solución con los nuevos valores
-        float* temp = x;
-        x = x_new;
-        x_new = temp;
-
-        //Comprobamos si la norma es menor que la tolerancia
-        if(sqrtf(norm2) < tol) {
-            break;
-        }
-    }
-    ck = get_counter();
-
-    printf("Ciclos: %.2lf\n", ck);
-    printf("Iteraciones: %d\n", iter);
-    printf("Norma: %f\n", sqrtf(norm2));
-
-    free(x_new);
+                }
+    
+                x_new[i] = (b[i] - sigma1) / a[i][i];
+                if (i + 1 < n) {
+                    x_new[i + 1] = (b[i + 1] - sigma2) / a[i + 1][i + 1];
+                }
+    
+                // Sumar el cuadrado de las diferencias
+                float diff1 = x_new[i] - x[i];
+                norm2 += diff1 * diff1;
+                if (i + 1 < n) {
+                    float diff2 = x_new[i + 1] - x[i + 1];
+                    norm2 += diff2 * diff2;
+                }
+            }
+    
+            // Actualizar el vector x
+            float* temp = x;
+            x = x_new;
+            x_new = temp;
+    
+            // Verificar convergencia
+            if (sqrtf(norm2) < tol) {
+                break;
+            }
+        }    
+        //! Detenemos el contador de ciclos
+        ck = get_counter();
+    
+        printf("Iteracion %d\nNorma= %.5lf\n", iter, sqrtf(norm2));
+        printf("Ciclos totales = %.2lf\n", ck);
+    
+        free(x_new);
 }
 
-int main(int argc, char* argv[]) {
-    //Declaramos las variables que usaremos
-    float** a = NULL;
-    float* b = NULL;
-    float* x = NULL;
+int main(int argc, char *argv[]){
+    /*
+    Entradas:
+    a: Matriz de coeficientes del sistema (float[n x n])
+    b: Vector de términos independientes (float[n])
+    x: Vector solución (float[n])
+    tol: Tolerancia para la convergencia (float)
+    max_iter: Número máximo de iteraciones (int)
+    */
+    float **a=NULL; // Matriz de coeficientes
+    float *b=NULL; // vector de terminos independientes
+    float *x=NULL; // vector solución 
+    float tol = 1e-8; // Tolerancia de 1e-8
+    int max_iter = 20000; // 20000 iteracciones máximas
 
-    //Comprobamos que se ha introducido el tamaño de la matriz
-    if(argc != 2) {
-        printf("Error: se debe introducir el tamaño de la matriz como argumento.\n");
-        printf("Uso: %s <tamaño de la matriz>\n", argv[0]);
+    n=atoi(argv[1]);
+
+    //!reservamos memoria para la matriz a de esta forma
+    a=(float **)aligned_alloc(ALIGNMENT, n*sizeof(float *));
+    if(a==NULL){
+        printf("Error al reservar memoria para la matriz de coeficientes a\n");
         return EXIT_FAILURE;
     }
-
-    //Recuperamos el tamaño de la matriz
-    n = atoi(argv[1]);
-
-    //Reservamos memoria para la matriz (la almacenamos en un vector plano)
-    a = (float**)aligned_alloc(64, n * sizeof(float*));
-    if(a == NULL) {
-        printf("Error: no se ha podido reservar memoria para la matriz de coeficientes.\n");
-        return EXIT_FAILURE;
-    }
-    //Se reserva memoria para cada fila de la matriz
-    for(int i = 0; i < n; i++) {
-        a[i] = (float*)aligned_alloc(64, n * sizeof(float));
-        if(a[i] == NULL) {
-            printf("Error: no se ha podido reservar memoria para la fila %d de la matriz de coeficientes.\n", i);
-            //Liberamos la memoria reservada hasta el momento
-            for(int j = 0; j < i; j++) {
+    //!reservamos memoria para cada una de las filas de la matriz a
+    for(int i=0; i<n ; i++){
+        a[i]=(float *)aligned_alloc(ALIGNMENT, n*sizeof(float));
+        if(a[i]==NULL){
+            printf("Error al reservar memoria para las filas de la matriz a\n");
+            //!para que en caso de que se reservase memoria hasta el momento, se libere debido al fallo
+            for(int j=0;j<i;j++){
                 free(a[j]);
             }
             free(a);
@@ -178,24 +106,22 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    //Se reserva memoria para el vector de términos independientes
-    b = (float*)aligned_alloc(64, n * sizeof(float));
-    if(b == NULL) {
-        printf("Error: no se ha podido reservar memoria para el vector de términos independientes.\n");
-        //Liberamos la memoria reservada para la matriz
-        for(int i = 0; i < n; i++) {
+    //!reservamos memoria para el vector b
+    b=(float*)aligned_alloc(ALIGNMENT, n*sizeof(float));
+    if(b==NULL){
+        printf("Error al reservar memoria para el vector de terminos independientes b\n");
+        for(int i=0;i<n;i++){
             free(a[i]);
         }
         free(a);
         return EXIT_FAILURE;
     }
 
-    //Se reserva memoria para el vector solución
-    x = (float*)aligned_alloc(64, n * sizeof(float));
-    if(x == NULL) {
-        printf("Error: no se ha podido reservar memoria para el vector solución.\n");
-        //Liberamos la memoria reservada para el vector de términos independientes
-        for(int i = 0; i < n; i++) {
+    //!reservamos memoria para el vector solución x
+    x=(float*)aligned_alloc(ALIGNMENT, n*sizeof(float));
+    if(x==NULL){
+        printf("Error al reservar memoria para el vector solución x\n");
+        for(int i=0;i<n;i++){
             free(a[i]);
         }
         free(a);
@@ -203,39 +129,42 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
 
-    //Inicializamos la semilla para la generación de números aleatorios
-    srand(n);
+    srand(n); //! Inicializamos la semilla para la generación de números aleatorios
 
-    //Inicializamos la matriz
-    for(int i = 0; i < n; i++) {
-        float row_sum = 0.0;
-        for(int j = 0; j < n; j++) {
-            a[i][j] = (float)rand() / RAND_MAX;
-            row_sum += a[i][j];
+    //!inicializamos la variable a como se indica en el pdf
+    for(int i=0;i<n;i++){
+        float sum_acum = 0.0;    
+        for(int j=0;j<n;j++){
+            a[i][j]=(float) rand() / RAND_MAX;
+            //!hallamos la suma de los elementos de la fila
+            sum_acum+=a[i][j];
         }
-        a[i][i] += row_sum;
+        //!sumamos a cada valor de la diagonal el valor de la suma de los elementos de esa fila
+        a[i][i]+=sum_acum;
     }
 
-    //Inicializamos el vector de términos independientes
-    for(int i = 0; i < n; i++) {
-        b[i] = (float)rand() / RAND_MAX;
+    //!inicializamos el vector b con valores aleatorios
+    for(int i=0;i<n;i++){
+        b[i]=(float) rand() / RAND_MAX;
     }
 
-    //Inicializamos el vector solución
-    for(int i = 0; i < n; i++) {
-        x[i] = 0.0;
+    //!inicializamos el vector solución x a 0
+    for(int i=0;i<n;i++){
+        x[i]=0.0;
     }
 
-    //Llamamos a la función que implementa el método de Jacobi
-    v2Jacobi(a, b, x, TOL, MAX_ITER);
+    //!llamamos al método Jacobi
+    Jacobi(a,b,x,tol,max_iter);
 
-    //Liberamos la memoria reservada para la matriz y los vectores
-    for(int i = 0; i < n; i++) {
+    //!liberamos la memoria reservada y finalizamos el programa
+    for(int i=0;i<n;i++){
         free(a[i]);
     }
     free(a);
     free(b);
     free(x);
+    printf("Fin del programa\n");
 
-    return EXIT_SUCCESS;
+    return 0;
 }
+            
