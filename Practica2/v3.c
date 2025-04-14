@@ -24,37 +24,58 @@ void v3Jacobi(float** a, float* b, float* x, float tol, int max_iter) {
     for (iter = 0; iter < max_iter; iter++) {
         norm2 = 0.0;
 
-        for (int i = 0; i < n; i++) {
-            float sigma = 0.0f;
+        for (int i = 0; i < n; i += 2) { // Procesamos dos filas por iteración
+            float sigma1 = 0.0f, sigma2 = 0.0f;
 
             int j;
             for (j = 0; j <= n - 8; j += 8) {
-                __m256 va = _mm256_loadu_ps(&a[i][j]);
+                // Cargamos 8 elementos de la fila i
+                __m256 va1 = _mm256_loadu_ps(&a[i][j]);
                 __m256 vx = _mm256_loadu_ps(&x[j]);
 
-                // Cargar máscara manualmente con if en bucle
-                float a_vals[8], x_vals[8];
-                _mm256_storeu_ps(a_vals, va);
+                // Cargamos 8 elementos de la fila i+1 (si existe)
+                __m256 va2 = (i + 1 < n) ? _mm256_loadu_ps(&a[i + 1][j]) : _mm256_setzero_ps();
+
+                // Convertimos a arreglos para manejar la máscara
+                float a_vals1[8], a_vals2[8], x_vals[8];
+                _mm256_storeu_ps(a_vals1, va1);
+                _mm256_storeu_ps(a_vals2, va2);
                 _mm256_storeu_ps(x_vals, vx);
 
                 for (int k = 0; k < 8; k++) {
-                    if (j + k != i) sigma += a_vals[k] * x_vals[k];
+                    if (j + k != i) sigma1 += a_vals1[k] * x_vals[k];
+                    if (i + 1 < n && j + k != i + 1) sigma2 += a_vals2[k] * x_vals[k];
                 }
             }
 
+            // Procesamos los elementos restantes
             for (; j < n; j++) {
-                if (j != i) sigma += a[i][j] * x[j];
+                if (j != i) sigma1 += a[i][j] * x[j];
+                if (i + 1 < n && j != i + 1) sigma2 += a[i + 1][j] * x[j];
             }
 
-            x_new[i] = (b[i] - sigma) / a[i][i];
-            float diff = x_new[i] - x[i];
-            norm2 += diff * diff;
+            // Calculamos los nuevos valores de x[i] y x[i+1]
+            x_new[i] = (b[i] - sigma1) / a[i][i];
+            if (i + 1 < n) {
+                x_new[i + 1] = (b[i + 1] - sigma2) / a[i + 1][i + 1];
+            }
+
+            // Calculamos las diferencias para la norma
+            float diff1 = x_new[i] - x[i];
+            norm2 += diff1 * diff1;
+
+            if (i + 1 < n) {
+                float diff2 = x_new[i + 1] - x[i + 1];
+                norm2 += diff2 * diff2;
+            }
         }
 
-        for (int i = 0; i < n; i++) {
-            x[i] = x_new[i];
-        }
+        // Actualizamos el vector x
+        float *temp=x;
+        x=x_new;
+        x_new=temp;
 
+        // Verificamos la convergencia
         if (sqrtf(norm2) < tol) break;
     }
 
