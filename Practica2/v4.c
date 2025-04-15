@@ -1,46 +1,35 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <math.h>
-#include "counter.h"
 #include <omp.h>
-#include <stdint.h>
+#include "counter.h"
 
 #define ALIGNMENT 64
 
 int n=0;
-int num_threads=0; //a partir de 16, el rendimiento
 
 void Jacobi(float **a, float *b, float *x, float tol, int max_iter){
     /*
         Variables auxiliares:
         x_new: Vector nueva solución (float[n])
      */
-    double ck=0.0;
-    int iter;
-    float *x_new=(float *)aligned_alloc(ALIGNMENT,n*sizeof(float));
-    float norm2=0.0;
-    float sigma1 = 0.0, sigma2 = 0.0;
+        double ck=0.0;
+        int iter;
+        float *x_new=(float *)aligned_alloc(ALIGNMENT,n*sizeof(float));
+        float norm2=0.0;
+        //!iniciamos el contador de ciclos
+        start_counter();
+        for(iter=0;iter<max_iter;iter++){
+            //!declaracion de las variables locales
+            int i, j;
+            float sigma1, sigma2, diff1, diff2;
 
-    //!iniciamos el contador de ciclos
-    start_counter();
-
-    for(iter=0;iter<max_iter;iter++){
-        norm2=0.0; //!norma del vector al cuadrado (float) 
-
-        #pragma omp parallel 
-        {
-
-            float local_norm2 = 0.0; // Variable local para la reducción
-
-            #pragma omp for schedule(dynamic) reduction(+:norm2,sigma1,sigma2)
-            for (int i = 0; i < n; i += 2) {
-
-                sigma1 = 0.0;
-                sigma2 = 0.0;
-
-                // Fusión de bucles internos
-                int j = 0;
+            norm2=0.0; //!norma del vector al cuadrado (float) 
+            #pragma omp parallel for schedule(static) shared(a,b,x,x_new,n) private(i,j,diff1,diff2,sigma1,sigma2) reduction(+:norm2)
+            for(i=0; i<n; i+=2){
+                sigma1=0, sigma2=0;
                 for (j = 0; j <= n - 4; j += 4) {
                     if (i != j) {
                         sigma1 += a[i][j] * x[j];
@@ -77,44 +66,39 @@ void Jacobi(float **a, float *b, float *x, float tol, int max_iter){
                         sigma2 += a[i + 1][k] * x[k];
                     }
                 }
-
-                x_new[i] = (b[i] - sigma1) / a[i][i];
-                if (i + 1 < n) {
-                    x_new[i + 1] = (b[i + 1] - sigma2) / a[i + 1][i + 1];
+                x_new[i]=(b[i]-sigma1)/a[i][i];
+                if(i+1<n){
+                    x_new[i+1]=(b[i+1]-sigma2)/a[i+1][i+1];
                 }
-
-                // Sumar el cuadrado de las diferencias
-                float diff1 = x_new[i] - x[i];
-                local_norm2 += diff1 * diff1;
-                if (i + 1 < n) {
-                    float diff2 = x_new[i + 1] - x[i + 1];
-                    local_norm2 += diff2 * diff2;
+                
+                diff1=(x_new[i]-x[i]);
+                norm2+= diff1 * diff1;
+                
+                if(i+1<n){
+                    diff2=(x_new[i+1]-x[i+1]);
+                    norm2+= diff2 * diff2;
                 }
             }
 
-            // Actualizar la norma global
-            #pragma omp atomic
-            norm2 += local_norm2;
+            
+            float *temp=x;
+                x=x_new;
+                x_new=temp;
 
+            if(sqrtf(norm2)<tol){
+                break;
+            }
+        }    
+        //! Detenemos el contador de ciclos
+        ck = get_counter();
+    
+        printf("Iteracion %d\nNorma= %.5lf\n", iter, sqrtf(norm2));
+        printf("Ciclos totales = %.2lf\n", ck);
+        for(int i=0; i<n;i++){
+            printf("vector solucion = %.5f\n", x[i]);
         }
-
-        // Actualizar el vector x
-        float* temp = x;
-        x = x_new;
-        x_new = temp;
-
-        // Verificar convergencia
-        if (sqrtf(norm2) < tol) {
-            break;
-        }
-    }    
-    //! Detenemos el contador de ciclos
-    ck = get_counter();
-
-    printf("Iteracion %d\nNorma= %.5lf\n", iter, sqrtf(norm2));
-    printf("Ciclos totales = %.2lf\n", ck);
-
-    free(x_new);
+    
+        free(x_new);
 }
 
 int main(int argc, char *argv[]){
@@ -132,22 +116,16 @@ int main(int argc, char *argv[]){
     float tol = 1e-8; // Tolerancia de 1e-8
     int max_iter = 20000; // 20000 iteracciones máximas
 
-    if(argc != 3) {
-        printf("Error: se necesitan 2 argumentos: n y num_threads\n");
-        return EXIT_FAILURE;
-    }
+    n=atoi(argv[1]);
 
-    n = atoi(argv[1]);
-    if (n <= 0) {
-        printf("Error: el tamaño de la matriz debe ser un número entero positivo.\n");
-        return EXIT_FAILURE;
-    }
+    int num_threads = atoi(argv[2]); // Número de hilos
 
-    num_threads = atoi(argv[2]);
     if (num_threads <= 0) {
-        printf("Error: el número de hilos debe ser un número entero positivo.\n");
+        printf("El número de hilos debe ser mayor que 0.\n");
         return EXIT_FAILURE;
     }
+
+    // Configurar el número de hilos para OpenMP
     omp_set_num_threads(num_threads);
 
     //!reservamos memoria para la matriz a de esta forma
