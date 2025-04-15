@@ -27,7 +27,34 @@ void Jacobi(float **a, float *b, float *x, float tol, int max_iter){
                 float sigma1 = 0.0, sigma2 = 0.0;
     
                 // Fusión de bucles internos
-                for (int j = 0; j < n; j++) {
+                int j = 0;
+                for (; j + 3 < n; j += 4) {
+                    if (i != j) {
+                        sigma1 += a[i][j] * x[j];
+                    }
+                    if (i + 1 < n && i + 1 != j) {
+                        sigma2 += a[i + 1][j] * x[j];
+                    }
+                    if (i != j + 1) {
+                        sigma1 += a[i][j + 1] * x[j + 1];
+                    }
+                    if (i + 1 < n && i + 1 != j + 1) {
+                        sigma2 += a[i + 1][j + 1] * x[j + 1];
+                    }
+                    if (i != j + 2) {
+                        sigma1 += a[i][j + 2] * x[j + 2];
+                    }
+                    if (i + 1 < n && i + 1 != j + 2) {
+                        sigma2 += a[i + 1][j + 2] * x[j + 2];
+                    }
+                    if (i != j + 3) {
+                        sigma1 += a[i][j + 3] * x[j + 3];
+                    }
+                    if (i + 1 < n && i + 1 != j + 3) {
+                        sigma2 += a[i + 1][j + 3] * x[j + 3];
+                    }
+                }
+                for (; j < n; j++) {
                     if (i != j) {
                         sigma1 += a[i][j] * x[j];
                     }
