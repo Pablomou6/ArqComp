@@ -16,67 +16,102 @@ void Jacobi(float **a, float *b, float *x, float tol, int max_iter){
         Variables auxiliares:
         x_new: Vector nueva solución (float[n])
      */
-    double ck = 0.0;
+    double ck=0.0;
     int iter;
-    float *x_new = (float *)aligned_alloc(ALIGNMENT, n * sizeof(float));
-    if (x_new == NULL) {
-        printf("Error al reservar memoria para x_new\n");
-        return;
-    }
-    float norm2 = 0.0;
+    float *x_new=(float *)aligned_alloc(ALIGNMENT,n*sizeof(float));
+    float norm2=0.0;
+    float sigma1 = 0.0, sigma2 = 0.0;
 
-    //! Iniciamos el contador de ciclos
+    //!iniciamos el contador de ciclos
     start_counter();
 
-    for (iter = 0; iter < max_iter; iter++) {
-        norm2 = 0.0;
+    for(iter=0;iter<max_iter;iter++){
+        norm2=0.0; //!norma del vector al cuadrado (float) 
 
-        // Paralelizamos el bucle externo con OpenMP
-        #pragma omp parallel
+        #pragma omp parallel 
         {
+
             float local_norm2 = 0.0; // Variable local para la reducción
 
-            #pragma omp for schedule(dynamic) reduction(+:norm2)
-            for (int i = 0; i < n; i++) {
-                float sigma = 0.0;
+            #pragma omp for schedule(dynamic) reduction(+:norm2,sigma1,sigma2)
+            for (int i = 0; i < n; i += 2) {
 
-                // Paralelizamos el cálculo de sigma con reducción
-                #pragma omp parallel for reduction(+:sigma)
-                for (int j = 0; j < n; j++) {
+                sigma1 = 0.0;
+                sigma2 = 0.0;
+
+                // Fusión de bucles internos
+                int j = 0;
+                for (j = 0; j <= n - 4; j += 4) {
                     if (i != j) {
-                        sigma += a[i][j] * x[j];
+                        sigma1 += a[i][j] * x[j];
+                    }
+                    if (i + 1 < n && i + 1 != j) {
+                        sigma2 += a[i + 1][j] * x[j];
+                    }
+                    if (i != j + 1) {
+                        sigma1 += a[i][j + 1] * x[j + 1];
+                    }
+                    if (i + 1 < n && i + 1 != j + 1) {
+                        sigma2 += a[i + 1][j + 1] * x[j + 1];
+                    }
+                    if (i != j + 2) {
+                        sigma1 += a[i][j + 2] * x[j + 2];
+                    }
+                    if (i + 1 < n && i + 1 != j + 2) {
+                        sigma2 += a[i + 1][j + 2] * x[j + 2];
+                    }
+                    if (i != j + 3) {
+                        sigma1 += a[i][j + 3] * x[j + 3];
+                    }
+                    if (i + 1 < n && i + 1 != j + 3) {
+                        sigma2 += a[i + 1][j + 3] * x[j + 3];
+                    }
+                }
+                
+                int k = 0;
+                for (k = j; k < n; k++) {
+                    if (i != k) {
+                        sigma1 += a[i][k] * x[k];
+                    }
+                    if (i + 1 < n && i + 1 != k) {
+                        sigma2 += a[i + 1][k] * x[k];
                     }
                 }
 
-                // Calculamos el nuevo valor de x[i]
-                x_new[i] = (b[i] - sigma) / a[i][i];
+                x_new[i] = (b[i] - sigma1) / a[i][i];
+                if (i + 1 < n) {
+                    x_new[i + 1] = (b[i + 1] - sigma2) / a[i + 1][i + 1];
+                }
 
-                // Calculamos la diferencia para la norma
-                float diff = x_new[i] - x[i];
-                local_norm2 += diff * diff;
+                // Sumar el cuadrado de las diferencias
+                float diff1 = x_new[i] - x[i];
+                local_norm2 += diff1 * diff1;
+                if (i + 1 < n) {
+                    float diff2 = x_new[i + 1] - x[i + 1];
+                    local_norm2 += diff2 * diff2;
+                }
             }
 
-            // Actualizamos la norma global
+            // Actualizar la norma global
             #pragma omp atomic
             norm2 += local_norm2;
+
         }
 
-        // Actualizamos el vector x
-        #pragma omp parallel for
-        for (int i = 0; i < n; i++) {
-            x[i] = x_new[i];
-        }
+        // Actualizar el vector x
+        float* temp = x;
+        x = x_new;
+        x_new = temp;
 
-        // Verificamos la convergencia
+        // Verificar convergencia
         if (sqrtf(norm2) < tol) {
             break;
         }
-    }
-
+    }    
     //! Detenemos el contador de ciclos
     ck = get_counter();
 
-    printf("Iteraciones: %d\nNorma: %.5lf\n", iter, sqrtf(norm2));
+    printf("Iteracion %d\nNorma= %.5lf\n", iter, sqrtf(norm2));
     printf("Ciclos totales = %.2lf\n", ck);
 
     free(x_new);
