@@ -77,8 +77,8 @@ int main(int argc, char* argv[]) {
     float* b = NULL;
     float* x = NULL;
 
-    //Comprobamos que se ha introducido el tamaño de la matriz
-    if(argc != 2) {
+    //Comprobamos que se ha introducido el tamaño de la matriz. También se pudo introducir el número de hilos, pero no lo necesitamos.
+    if(argc != 2 && argc != 3) {
         printf("Error: se debe introducir el tamaño de la matriz como argumento.\n");
         printf("Uso: %s <tamaño de la matriz>\n", argv[0]);
         return EXIT_FAILURE;

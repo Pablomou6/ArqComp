@@ -39,7 +39,7 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-                "v1.c", //cambiar esto poloarchivo que queres debuguear
+                "v3.c", //cambiar esto poloarchivo que queres debuguear
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
                 "-lm"
