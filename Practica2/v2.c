@@ -20,136 +20,136 @@ int n = 0;
 */
 
 void Jacobi(float **a, float *b, float *x, float tol, int max_iter){
-        double ck = 0.0;
-        int iter = 0;
-        float* x_new = (float*)aligned_alloc(ALIGNMENT, n * sizeof(float));
-        float norm2 = 0.0;
+    double ck = 0.0;
+    int iter = 0;
+    float* x_new = (float*)aligned_alloc(ALIGNMENT, n * sizeof(float));
+    float norm2 = 0.0;
 
-        //Iniciamos el contador de ciclos
-        start_counter();
-        for(iter=0;iter<max_iter;iter++){
-            norm2=0.0; 
+    //Iniciamos el contador de ciclos
+    start_counter();
+    for(iter=0;iter<max_iter;iter++){
+        norm2=0.0; 
 
-            //Respecto a v1, desarollamos el bucle de las filas de la matriz. Nos añade eficiencia.
-            for (int i = 0; i < n; i += 2) {
+        //Respecto a v1, desarollamos el bucle de las filas de la matriz. Nos añade eficiencia.
+        for (int i = 0; i < n; i += 2) {
 
-                float sigma1 = 0.0, sigma2 = 0.0;
-    
-                /*
-                    A su vez, el bucle de las columnas lo desarrollamos de 4 en 4, permitiendo procesar 4 elementos en una iteración. Como se hace en
-                    dos filas simultáneamente, procesamos 8 elementos en una iteración.
-                    Decidimos comprobar en todo momento que no sumásemos la diagonal ya que, al procesar dos filas a la vez, la diagonal varía y esto
-                    supondría un aumento en el número de bucles si dividiésemos el bucle en dos.
-                */
-                int j = 0;
-                for (; j + 3 < n; j += 4) {
-                    if (i != j) {
-                        sigma1 += a[i][j] * x[j];
-                    }
-                    if (i + 1 < n && i + 1 != j) {
-                        sigma2 += a[i + 1][j] * x[j];
-                    }
-                    if (i != j + 1) {
-                        sigma1 += a[i][j + 1] * x[j + 1];
-                    }
-                    if (i + 1 < n && i + 1 != j + 1) {
-                        sigma2 += a[i + 1][j + 1] * x[j + 1];
-                    }
-                    if (i != j + 2) {
-                        sigma1 += a[i][j + 2] * x[j + 2];
-                    }
-                    if (i + 1 < n && i + 1 != j + 2) {
-                        sigma2 += a[i + 1][j + 2] * x[j + 2];
-                    }
-                    if (i != j + 3) {
-                        sigma1 += a[i][j + 3] * x[j + 3];
-                    }
-                    if (i + 1 < n && i + 1 != j + 3) {
-                        sigma2 += a[i + 1][j + 3] * x[j + 3];
-                    }
+            float sigma1 = 0.0, sigma2 = 0.0;
+
+            /*
+                A su vez, el bucle de las columnas lo desarrollamos de 4 en 4, permitiendo procesar 4 elementos en una iteración. Como se hace en
+                dos filas simultáneamente, procesamos 8 elementos en una iteración.
+                Decidimos comprobar en todo momento que no sumásemos la diagonal ya que, al procesar dos filas a la vez, la diagonal varía y esto
+                supondría un aumento en el número de bucles si dividiésemos el bucle en dos.
+            */
+            int j = 0;
+            for (; j + 3 < n; j += 4) {
+                if (i != j) {
+                    sigma1 += a[i][j] * x[j];
                 }
-                //Dado que el programa debe funcionar para todo n, debemos tener en cuenta el caso de que n no sea múltiplo de 4. Procesamos los restantes
-                for (; j < n; j++) {
-                    if (i != j) {
-                        sigma1 += a[i][j] * x[j];
-                    }
-                    if (i + 1 < n && i + 1 != j) {
-                        sigma2 += a[i + 1][j] * x[j];
-                    }
+                if (i + 1 < n && i + 1 != j) {
+                    sigma2 += a[i + 1][j] * x[j];
                 }
+                if (i != j + 1) {
+                    sigma1 += a[i][j + 1] * x[j + 1];
+                }
+                if (i + 1 < n && i + 1 != j + 1) {
+                    sigma2 += a[i + 1][j + 1] * x[j + 1];
+                }
+                if (i != j + 2) {
+                    sigma1 += a[i][j + 2] * x[j + 2];
+                }
+                if (i + 1 < n && i + 1 != j + 2) {
+                    sigma2 += a[i + 1][j + 2] * x[j + 2];
+                }
+                if (i != j + 3) {
+                    sigma1 += a[i][j + 3] * x[j + 3];
+                }
+                if (i + 1 < n && i + 1 != j + 3) {
+                    sigma2 += a[i + 1][j + 3] * x[j + 3];
+                }
+            }
+            //Dado que el programa debe funcionar para todo n, debemos tener en cuenta el caso de que n no sea múltiplo de 4. Procesamos los restantes
+            for (; j < n; j++) {
+                if (i != j) {
+                    sigma1 += a[i][j] * x[j];
+                }
+                if (i + 1 < n && i + 1 != j) {
+                    sigma2 += a[i + 1][j] * x[j];
+                }
+            }
 
-                /*
-                    Antes de llegar a la conclusión de que desenrollar el bucle por filas nos reducía ciclos, probamos también los bloques
-                    con un blocking_size de 64, tamaño el cual calculamos que debería ser el mejor a priori. Es importante esta afirmación
-                    previa ya que el código comentado del blocking tiene el bucle de las columnas desenrollado y dividido en 2 para 
-                    evitar comprobar la diagonal, pero como ya mencionamos antes, al desenrollar el bucle por filas se nos presentaba el problema de
-                    tener 2 diagonales diferentes, siendo mejor desenrollar el bucle en menos elementos por fila (que al tener dos filas simultáneamente
-                    conseguíamos el mismo resultado) y comprobar con if las diagonales. El código de los bloques es el siguiente:
+            /*
+                Antes de llegar a la conclusión de que desenrollar el bucle por filas nos reducía ciclos, probamos también los bloques
+                con un blocking_size de 64, tamaño el cual calculamos que debería ser el mejor a priori. Es importante esta afirmación
+                previa ya que el código comentado del blocking tiene el bucle de las columnas desenrollado y dividido en 2 para 
+                evitar comprobar la diagonal, pero como ya mencionamos antes, al desenrollar el bucle por filas se nos presentaba el problema de
+                tener 2 diagonales diferentes, siendo mejor desenrollar el bucle en menos elementos por fila (que al tener dos filas simultáneamente
+                conseguíamos el mismo resultado) y comprobar con if las diagonales. El código de los bloques es el siguiente:
 
-                    Iteramos sobre bloques de filas
-                    for (int bi = 0; bi < n; bi += BLOCK_SIZE) {
-                        int bi_end = (bi + BLOCK_SIZE > n) ? n : bi + BLOCK_SIZE;
+                Iteramos sobre bloques de filas
+                for (int bi = 0; bi < n; bi += BLOCK_SIZE) {
+                    int bi_end = (bi + BLOCK_SIZE > n) ? n : bi + BLOCK_SIZE;
 
-                        Iteramos sobre cada fila dentro del bloque
-                        for (int i = bi; i < bi_end; i++) {
-                            float sigma = 0.0;
+                    Iteramos sobre cada fila dentro del bloque
+                    for (int i = bi; i < bi_end; i++) {
+                        float sigma = 0.0;
 
-                            Suma de los elementos antes de la diagonal (bloques de columnas)
-                            for (int bj = 0; bj < i; bj += BLOCK_SIZE) {
-                                int bj_end = (bj + BLOCK_SIZE > i) ? i : bj + BLOCK_SIZE;
+                        Suma de los elementos antes de la diagonal (bloques de columnas)
+                        for (int bj = 0; bj < i; bj += BLOCK_SIZE) {
+                            int bj_end = (bj + BLOCK_SIZE > i) ? i : bj + BLOCK_SIZE;
 
-                                for (int j = bj; j < bj_end; j++) {
-                                    sigma += a[i][j] * x[j];
-                                }
+                            for (int j = bj; j < bj_end; j++) {
+                                sigma += a[i][j] * x[j];
                             }
-
-                            Suma de los elementos después de la diagonal (bloques de columnas)
-                            for (int bj = i + 1; bj < n; bj += BLOCK_SIZE) {
-                                int bj_end = (bj + BLOCK_SIZE > n) ? n : bj + BLOCK_SIZE;
-
-                                for (int j = bj; j < bj_end; j++) {
-                                    sigma += a[i][j] * x[j];
-                                }
-                            }
-                            (calculos del vector solución y diferencia)
                         }
+
+                        Suma de los elementos después de la diagonal (bloques de columnas)
+                        for (int bj = i + 1; bj < n; bj += BLOCK_SIZE) {
+                            int bj_end = (bj + BLOCK_SIZE > n) ? n : bj + BLOCK_SIZE;
+
+                            for (int j = bj; j < bj_end; j++) {
+                                sigma += a[i][j] * x[j];
+                            }
+                        }
+                        (calculos del vector solución y diferencia)
                     }
-                
-                */
-                
-                //Calculamos el nuevo valor del elemento i del vector solución
-                x_new[i] = (b[i] - sigma1) / a[i][i];
-                if (i + 1 < n) {
-                    x_new[i + 1] = (b[i + 1] - sigma2) / a[i + 1][i + 1];
                 }
-    
-                //Sumamos el cuadrado de las diferencias. Respecto a v1, decidimos almacenar la diferencia en una variable para así solo calcularla una
-                //vez y no dos.
-                float diff1 = x_new[i] - x[i];
-                norm2 += diff1 * diff1;
-                if (i + 1 < n) {
-                    float diff2 = x_new[i + 1] - x[i + 1];
-                    norm2 += diff2 * diff2;
-                }
+            
+            */
+            
+            //Calculamos el nuevo valor del elemento i del vector solución
+            x_new[i] = (b[i] - sigma1) / a[i][i];
+            if (i + 1 < n) {
+                x_new[i + 1] = (b[i + 1] - sigma2) / a[i + 1][i + 1];
             }
-    
-            //Actualizamos el vector solución. Respecto a v1, lo hacemos con intercambio de punteros.
-            float* temp = x;
-            x = x_new;
-            x_new = temp;
-    
-            //Verificamos la convergencia
-            if (sqrtf(norm2) < tol) {
-                break;
+
+            //Sumamos el cuadrado de las diferencias. Respecto a v1, decidimos almacenar la diferencia en una variable para así solo calcularla una
+            //vez y no dos.
+            float diff1 = x_new[i] - x[i];
+            norm2 += diff1 * diff1;
+            if (i + 1 < n) {
+                float diff2 = x_new[i + 1] - x[i + 1];
+                norm2 += diff2 * diff2;
             }
-        }    
-        //Detenemos el contador de ciclos
-        ck = get_counter();
-    
-        printf("Iteracion %d\nNorma= %.5lf\n", iter, sqrtf(norm2));
-        printf("Ciclos totales = %.2lf\n", ck);
-    
-        free(x_new);
+        }
+
+        //Actualizamos el vector solución. Respecto a v1, lo hacemos con intercambio de punteros.
+        float* temp = x;
+        x = x_new;
+        x_new = temp;
+
+        //Verificamos la convergencia
+        if (sqrtf(norm2) < tol) {
+            break;
+        }
+    }    
+    //Detenemos el contador de ciclos
+    ck = get_counter();
+
+    printf("Iteracion %d\nNorma= %.5lf\n", iter, sqrtf(norm2));
+    printf("Ciclos totales = %.2lf\n", ck);
+
+    free(x_new);
 }
 
 int main(int argc, char *argv[]){
