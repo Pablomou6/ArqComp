@@ -86,6 +86,10 @@ int main(int argc, char* argv[]) {
 
     //Recuperamos el tamaño de la matriz
     n = atoi(argv[1]);
+    if(n <= 0) {
+        printf("El tamaño de la matriz debe ser mayor que 0.\n");
+        return EXIT_FAILURE;
+    }
 
     //Reservamos memoria para la matriz
     a = (float**)aligned_alloc(64, n * sizeof(float*));
