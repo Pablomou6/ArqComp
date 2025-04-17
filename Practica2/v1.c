@@ -66,7 +66,7 @@ void v1Jacobi(float** a, float* b, float* x, float tol, int max_iter) {
 
     printf("Ciclos: %.2lf\n", ck);
     printf("Iteraciones: %d\n", iter);
-    printf("Norma: %f\n", sqrtf(norm2));
+    printf("Norma: %lf\n", sqrtf(norm2));
 
     free(x_new);
 }

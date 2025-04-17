@@ -146,7 +146,7 @@ void Jacobi(float **a, float *b, float *x, float tol, int max_iter){
     //Detenemos el contador de ciclos
     ck = get_counter();
 
-    printf("Iteracion %d\nNorma= %.5lf\n", iter, sqrtf(norm2));
+    printf("Iteracion %d\nNorma= %lf\n", iter, sqrtf(norm2));
     printf("Ciclos totales = %.2lf\n", ck);
 
     free(x_new);
